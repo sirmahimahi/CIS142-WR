@@ -7,7 +7,7 @@
 
 /* Write a C++ game that allows a player to play Rock, Paper, Scissors against the
 computer. The application should prompt the user for a choice and the
-computer’s choice should be totally random. Your application must process the
+computerâ€™s choice should be totally random. Your application must process the
 results, if there is a winner, indicate so, if there is a tie then the game is not over
 until there is a winner. Below is a sample run, the UI design is totally up to you,
 the developer, it does not have to be exact as below. */
