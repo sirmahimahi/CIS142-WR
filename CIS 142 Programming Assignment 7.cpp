@@ -3,7 +3,7 @@
 // Mao Bergan
 // -TBA- -TBA- 2024
 
-// CIS 142 Programming Assignment #6.cpp
+// CIS 142 Programming Assignment #7.cpp
 
 /* The scenario is this: you are on Noah's ark with a set of animals. As the months pass, the
 animals begin to breed. You need to keep track of your animal inventory down below.
