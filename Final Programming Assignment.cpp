@@ -5,7 +5,7 @@
 
 // Final Programming Assignment.cpp
 
-/* Shakey’s garden can contain other objects which may be movable or immovable based upon its
+/* Shakeyâ€™s garden can contain other objects which may be movable or immovable based upon its
 physical nature; e.g Flowers. Flowers can be stepped on and destroyed. Trees are immovable and
 cannot be destroyed */
 
@@ -54,3 +54,4 @@ int main() {
     shakey.printGarden(garden, rows, columns);
     return 0;
 }
+endl;
