@@ -1,153 +1,198 @@
 // CIS142 Introduction to C++ Summer 2024
-// Programming Assignment #7
+// Final Programming Assignment
 // Mao Bergan
-// -TBA- -TBA- 2024
+// 25 July 2024
 
-// CIS 142 Programming Assignment #7.cpp
+// Final Programming Assignment.cpp
 
-/* The scenario is this: you are on Noah's ark with a set of animals. As the months pass, the
-animals begin to breed. You need to keep track of your animal inventory down below.
-The ark has 3 types of animals: mammals, birds, and fish. Your program should have at least 2
-kinds of mammals (cat, dog), 2 kinds of fish (goldfish, shark), and 2 kinds of birds (eagle,
-parakeet). You should start the program with 2 animals of each species on the ark, one male
-and one female, for a total of 12 animals. */
+/* Shakey’s garden can contain other objects which may be movable or immovable based upon its
+physical nature; e.g Flowers. Flowers can be stepped on and destroyed. Trees are immovable and
+cannot be destroyed */
 
 #include <iostream>
 #include <vector>
-#include <ctime>
-#include <cstdlib>
-    
-class animals {
-public:
-    std::string gender;
-    std::string name;
-    int age = 0;
+#include <cctype>
 
-    animals(std::string locGender, std::string locName, int locAge) {
-        gender = locGender;
-        name = locName;
-        age = locAge;
+using namespace std;
+class Garden {
+public:
+    // control the console view of all elements in 2D array.
+    void printGarden(std::vector<std::vector<std::string>>& locGarden, int locRows, int locColumns) {
+        for (int i = 0; i < locRows; i++) {
+            for (int j = 0; j < locColumns; j++) {
+                std::cout << locGarden[i][j]; // print each element in the predefined garden.
+            }
+            std::cout << std::endl; // create a new row after each row is complete.
+        }
     }
-    void display() const {
-        std::cout << gender << " " << name << " " << age << "\n";
+
+    /* TEMPORARY -----> set the location of the robot. <----- TEMPORARY */
+    void location(std::vector<std::vector<std::string>>& shakey, int x, int y) {
+        shakey[x][y] = "S ";
     }
+    
+    void setStartingElements(std::vector<std::vector<std::string>>& shakey, int x, int y) {
+        for (int i = 0; i < x; i++) {
+            for (int j = 0; j < y; j++) {
+                shakey[i][j] = "* "; // set each element in the 2D array to this element.
+            }
+        }
+    }
+
+    
+    
+
+    // run if user rotates shakey left by 90 degrees.
+    char rotateLeft(char direction) {
+        switch (direction) {
+        case 'N':
+            return direction = 'E'; break;
+        case 'E':
+            return direction = 'S';  break;
+        case 'S':
+            return direction = 'W'; break;
+        default:
+            return direction = 'N'; break;
+        }
+        return direction;
+    }
+
+    // run if user rotates shakey right by 90 degrees.
+    char rotateRight(char direction) {
+        switch (direction) {
+        case 'N':
+            return direction = 'W'; break;
+        case 'E':
+            return direction = 'N'; break;
+        case 'S':
+            return direction = 'E'; break;
+        default:
+            return direction = 'S'; break;
+        }
+    }
+
+    int step(char direction, int x, int y, int rows, int columns) {
+        if (direction == 'N') {
+            if (y < rows) {
+                y++; return y;
+            }
+           
+        }
+        else if (direction == 'E') {
+            x++; return x;
+        }
+        else if (direction == 'S') {
+            y--; return y;
+        }
+        else if (direction == 'W') {
+            x--; return x;
+        }
+    }
+
+    vector<std::string> inventory;
+    void pickUpItem(const string& item) {
+        inventory.push_back(item);
+        cout << "Picked up " << item << endl;
+    }
+
+    void showInventory() const {
+        cout << "Inventory: ";
+        for (const auto& item : inventory) {
+            cout << item << " ";
+        }
+        cout << endl;
+    }
+   
 };
 
-int main()
-{
-    int userSelection = 1;
-    int months = 0;
-    int mammalBreed = 12;
-    int fishBreed = 6;
-    int birdBreed = 9;
-    srand(unsigned(time(NULL))); // random generator call
-    std::vector<animals> allAnimals; // creates a vector out of our class animals.
-    allAnimals.push_back(animals("Female", "Cat", 0));
-    allAnimals.push_back(animals("Male", "Cat", 0));
-    allAnimals.push_back(animals("Female", "Dog", 0));
-    allAnimals.push_back(animals("Male", "Dog", 0));
-    allAnimals.push_back(animals("Female", "Goldfish", 0));
-    allAnimals.push_back(animals("Male", "Goldfish", 0));
-    allAnimals.push_back(animals("Female", "Shark", 0));
-    allAnimals.push_back(animals("Male", "Shark", 0));
-    allAnimals.push_back(animals("Female", "Eagle", 0));
-    allAnimals.push_back(animals("Male", "Eagle", 0));
-    allAnimals.push_back(animals("Female", "Parakeet", 0));
-    allAnimals.push_back(animals("Male", "Parakeet", 0));
-    for (int i = 0; i < allAnimals.size(); i++) allAnimals[i].display(); // display all animals.
+int main() {
+    // used to store user array size.
+    int rows;
+    int columns;
+
+    // shakeys coordinates.
+    int x = 1;
+    int y = 1;
+
+    // control shakey direction.
+    char direction = 'N';
+    
+
+    std::cout << "Enter rows: ";
+    std::cin >> rows;
+    std::cout << "Enter columns: ";
+    std::cin >> columns;
+    
+    // create a 2D array named garden, with the user defined size.
+    std::vector<std::vector<std::string>> garden(rows, std::vector<std::string>(columns));
+    Garden shakey; // create object shakey the robot.
+
+    // allocate the user defined array with the element below.
+    shakey.setStartingElements(garden, rows, columns); // start the game, with the default map.
+
+    
+    shakey.location(garden, shakeyX, shakeyY); // set [1, 1] to S for shakey?
+    //shakey.printGarden(garden, rows, columns); // flush console and print garden.
+    
+
+    char userInput; // grab command from user.
+
+    string item;
     
     do {
-	if (months == 1) std::cout << "You have been on the ark for " << months << " month.\n";
-	else std::cout << "You have been on the ark for " << months << " months.\n";
-	
-    size_t animalVectorSize;
-    animalVectorSize = allAnimals.size(); // set vector size before running for loop.
-    if (months == mammalBreed) { 
-        for (int i = 0; i < animalVectorSize; i++) { // breed a new cat if it is 12 months old and female.
-            if (allAnimals[i].name == "Cat") {
-                if (allAnimals[i].gender == "Female") {
-                    int gender = rand() % 2; // assign the new mammal a random gender.
-                    std::string genderName = "Male";
-                    if (gender == 1) genderName = "Male";
-                    else genderName = "Female";
-                    allAnimals.push_back(animals(genderName, "Cat", 0));
-                }
-            }
-            if (allAnimals[i].name == "Dog") { // breed a new dog if it is 12 months old and female.
-                if (allAnimals[i].gender == "Female") {
-                    int gender = rand() % 2; // assign the new mammal a random gender.
-                    std::string genderName = "Male";
-                    if (gender == 1) genderName = "Male";
-                    else genderName = "Female";
-                    allAnimals.push_back(animals(genderName, "Dog", 0));
-                    mammalBreed = mammalBreed + 12;
-                }
-            }
+        shakey.printGarden(garden, rows, columns); // flush console and print garden.
+
+        // options menu.
+        cout << "Options:\n";
+        cout << "L - Move Left\n";
+        cout << "R - Move Right\n";
+        cout << "P - Pick Up Item\n";
+        cout << "I - Show Inventory\n";
+        cout << "Q - Quit\n";
+        cout << "Enter your choice: ";
+        cin >> userInput;
+       
+
+        switch (userInput) {
+            userInput = toupper(userInput);
+        case 'L':
+        
+            direction = shakey.rotateLeft(direction); 
+            std::system("cls");
+            std::cout << "Facing: " << direction << std::endl;
+            break;
+        case 'R':
+        
+            direction = shakey.rotateRight(direction);
+            std::system("cls");
+            std::cout << "Facing: " << direction << std::endl;
+            break;
+        case 'S':
+            x = shakey.step(direction, x, y, rows, columns);
+            y = shakey.step(direction, x, y, rows, columns);
+            break;
+        case 'P':
+        
+            cout << "Enter item to pick up: ";
+            cin >> item;
+            shakey.pickUpItem(item);
+            break;
+        case 'I':
+        case 'i':
+            shakey.showInventory();
+            break;
+        case 'Q':
+        case 'q':
+            cout << "Exiting...\n";
+            break;
+        default:
+            cout << "Invalid choice, please try again.\n";
+            break;
         }
-        mammalBreed = mammalBreed + 12;
-    }
+        
+    } while (userInput != 'Q' && userInput != 'q');
 
-    if (months == fishBreed) {
-        for (int i = 0; i < animalVectorSize; i++) { // breed a new goldfish if it is 12 months old and female.
-            if (allAnimals[i].name == "Goldfish") {
-                if (allAnimals[i].gender == "Female") {
-                    int gender = rand() % 2; // assign the new mammal a random gender.
-                    std::string genderName = "Male";
-                    if (gender == 1) genderName = "Male";
-                    else genderName = "Female";
-                    allAnimals.push_back(animals(genderName, "Goldfish", 0));
-                }
-            }
-            if (allAnimals[i].name == "Shark") { // breed a new shark if it is 12 months old and female.
-                if (allAnimals[i].gender == "Female") {
-                    int gender = rand() % 2; // assign the new mammal a random gender.
-                    std::string genderName = "Male";
-                    if (gender == 1) genderName = "Male";
-                    else genderName = "Female";
-                    allAnimals.push_back(animals(genderName, "Shark", 0));
-                }
-            }
-        }
-        fishBreed = fishBreed + 6;
-    }
 
-    if (months == birdBreed) {
-        for (int i = 0; i < animalVectorSize; i++) { // breed a new eagle if it is 12 months old and female.
-            if (allAnimals[i].name == "Eagle") {
-                if (allAnimals[i].gender == "Female") {
-                    int gender = rand() % 2; // assign the new mammal a random gender.
-                    std::string genderName = "Male";
-                    if (gender == 1) genderName = "Male";
-                    else genderName = "Female";
-                    allAnimals.push_back(animals(genderName, "Eagle", 0));
-                }
-            }
-            if (allAnimals[i].name == "Parakeet") { // breed a new parakeet if it is 12 months old and female.
-                if (allAnimals[i].gender == "Female") {
-                    int gender = rand() % 2; // assign the new mammal a random gender.
-                    std::string genderName = "Male";
-                    if (gender == 1) genderName = "Male";
-                    else genderName = "Female";
-                    allAnimals.push_back(animals(genderName, "Parakeet", 0));
-                }
-            }
-        }
-        birdBreed = birdBreed + 9;
-    }
 
-	std::cout << "What would you like to do?\n";
-	std::cout << "[1] Let another month pass.\n";
-	std::cout << "[2] Check inventory.\n";
-	std::cout << "[3] Quit.\n";
-	std::cin >> userSelection;
-    std::system("cls"); // clear terminal each time a user action is performed.
-
-    if (userSelection == 1) { // let a month pass and age each animal in the vector by 1 month.
-        for (int i = 0; i < allAnimals.size(); i++) allAnimals[i].age++; months++;
-    }
-    else if (userSelection == 2) { // refresh inventory with all existing and new animals.
-        for (int i = 0; i < allAnimals.size(); i++) allAnimals[i].display();
-    }
-    } while (userSelection != 3); // end program is user selects 3 to exit.
     return 0;
 }
