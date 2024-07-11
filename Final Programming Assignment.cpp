@@ -41,8 +41,9 @@ public:
     }
 
     // run if user rotates shakey left by 90 degrees.
-    char rotateLeft(char direction) {
-        if (direction == 'N') return direction = 'E';
+    char rotateRight(char direction) {
+        if (direction == 'N') 
+            return direction = 'E';
         else if (direction == 'E')
             return direction = 'S';
         else if (direction == 'S')
@@ -52,7 +53,7 @@ public:
     }
 
     // run if user rotates shakey right by 90 degrees.
-    char rotateRight(char direction) {
+    char rotateLeft(char direction) {
         if (direction == 'N')
             return direction = 'W';
         else if (direction == 'E')
@@ -64,8 +65,8 @@ public:
     }
 
     // control for shakey the robot to step forward based on which way they are facing.
-   void step(char direction, int &x, int &y, int rows, int columns) {
-      
+    void step(char direction, int& x, int& y, int rows, int columns) {
+
         if (direction == 'N') {
             if (y > 0) y--;
         }
@@ -100,11 +101,11 @@ int main() {
     char userInput; // store users options to execute commands.
 
     // shakeys coordinates, starts at (x, y) = (1, 1).
-    int x = 1;
-    int y = 1;
+    int x = 0;
+    int y = 0;
 
     // control shakey direction.
-    char direction = 'N';
+    char direction = 'E';
 
     string item; // inventory items?
 
@@ -118,7 +119,7 @@ int main() {
     // create a 2D array named garden, with the user defined size.
     vector<vector<string>> garden(rows, vector<string>(columns));
 
-    vector<int> shakeyGrid;
+    //vector<int> shakeyGrid;
 
     Garden shakey; // create object shakey the robot.
 
@@ -138,6 +139,7 @@ int main() {
         cout << "R - Move Right\n";
         cout << "P - Pick Up Item\n";
         cout << "I - Show Inventory\n";
+        cout << "S - Step\n";
         cout << "Q - Quit\n";
         cout << "Enter your choice: ";
         cin >> userInput;
