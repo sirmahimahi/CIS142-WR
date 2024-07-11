@@ -43,39 +43,40 @@ public:
     // run if user rotates shakey left by 90 degrees.
     char rotateLeft(char direction) {
         if (direction == 'N') return direction = 'E';
-        else if (direction == 'E') 
+        else if (direction == 'E')
             return direction = 'S';
-        else if (direction == 'S') 
+        else if (direction == 'S')
             return direction = 'W';
-        else if (direction == 'W') 
+        else if (direction == 'W')
             return direction = 'N';
     }
 
     // run if user rotates shakey right by 90 degrees.
     char rotateRight(char direction) {
-        if (direction == 'N') 
+        if (direction == 'N')
             return direction = 'W';
-        else if (direction == 'E') 
+        else if (direction == 'E')
             return direction = 'N';
-        else if (direction == 'S') 
+        else if (direction == 'S')
             return direction = 'E';
-        else if (direction == 'W') 
+        else if (direction == 'W')
             return direction = 'S';
     }
 
     // control for shakey the robot to step forward based on which way they are facing.
-    int step(char direction, int x, int y, int rows, int columns) {
+    vector<int> step(char direction, vector<int>& shakeyGrid, int x, int y, int rows, int columns) {
+        shakeyGrid = { x, y }; 
         if (direction == 'N') {
-            if (y < rows) y++; return y;
+            if (y > 0) y--; return shakeyGrid;
         }
         else if (direction == 'E') {
-            if (x < columns) x++; return x;
+            if (x < columns) x++; return shakeyGrid;
         }
         else if (direction == 'S') {
-            if (y >= 0) y--; return y;
+            if (y < rows) y++; return shakeyGrid;
         }
         else if (direction == 'W') {
-            if (x >= 0) x--; return x;
+            if (x > 0) x--; return shakeyGrid;
         }
     }
 
@@ -95,9 +96,7 @@ public:
 };
 
 int main() {
-    // used to store user array size.
-    int rows;
-    int columns;
+    
     char userInput; // store users options to execute commands.
 
     // shakeys coordinates, starts at (x, y) = (1, 1).
@@ -109,13 +108,17 @@ int main() {
 
     string item; // inventory items?
 
+    int rows;
     std::cout << "Enter rows: ";
     std::cin >> rows;
+    int columns;
     std::cout << "Enter columns: ";
     std::cin >> columns;
 
     // create a 2D array named garden, with the user defined size.
     vector<vector<string>> garden(rows, vector<string>(columns));
+    
+    vector<int> shakeyGrid;
 
     Garden shakey; // create object shakey the robot.
 
@@ -153,6 +156,10 @@ int main() {
             break;
         case 'S':
             system("cls");
+            shakeyGrid = shakey.step(direction, shakeyGrid, x, y, rows, columns);
+            x = shakeyGrid[0];
+            y = shakeyGrid[1];
+            std::cout << "Shakey coordinates: " << x << " " << y << endl;
             /*x = shakey.step(direction, x, y, rows, columns);
             y = shakey.step(direction, x, y, rows, columns);*/
             break;
