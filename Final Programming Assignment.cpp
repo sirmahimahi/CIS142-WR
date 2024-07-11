@@ -28,7 +28,7 @@ public:
 
     /* TEMPORARY -----> set the location of the robot. <----- TEMPORARY */
     void location(std::vector<vector<string>>& shakey, int& x, int& y) {
-        shakey[x][y] = "S ";
+        shakey[y][x] = "S ";
     }
 
     // sets every value in the user defined array to the default value '*'.
@@ -42,7 +42,7 @@ public:
 
     // run if user rotates shakey left by 90 degrees.
     char rotateRight(char direction) {
-        if (direction == 'N') 
+        if (direction == 'N')
             return direction = 'E';
         else if (direction == 'E')
             return direction = 'S';
@@ -62,6 +62,7 @@ public:
             return direction = 'E';
         else if (direction == 'W')
             return direction = 'S';
+        else std::cout << "Invalid Direction!\n";
     }
 
     // control for shakey the robot to step forward based on which way they are facing.
@@ -71,14 +72,15 @@ public:
             if (y > 0) y--;
         }
         else if (direction == 'E') {
-            if (x < columns) x++;
+            if (x + 1 < columns) x++;
         }
         else if (direction == 'S') {
-            if (y < rows) y++;
+            if (y + 1 < rows) y++;
         }
         else if (direction == 'W') {
             if (x > 0) x--;
         }
+        else std::cout << "Out of bounds!\n";
     }
 
     vector<std::string> inventory; // stores inventory items for shakey.
@@ -158,11 +160,11 @@ int main() {
             break;
         case 'S':
             system("cls");
-            garden[x][y] = "* ";
+            garden[y][x] = "* ";
             shakey.step(direction, x, y, rows, columns);
             shakey.location(garden, x, y);
 
-            std::cout << "Shakey coordinates: " << x << " " << y << endl;
+            std::cout << "Shakey coordinates: " << x + 1 << " " << y + 1 << endl;
             /*x = shakey.step(direction, x, y, rows, columns);
             y = shakey.step(direction, x, y, rows, columns);*/
             break;
