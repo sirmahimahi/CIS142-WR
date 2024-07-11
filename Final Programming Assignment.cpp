@@ -14,7 +14,7 @@ cannot be destroyed */
 #include <cctype>
 #include <windows.h>
 
-HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE); // control colors.
 using namespace std;
 
 class Garden {
@@ -102,32 +102,38 @@ public:
     }
 };
 
+void startGame();
+
 int main() {
+    startGame();
+    return 0;
+}
 
-    char userInput; // store users options to execute commands.
+void startGame() {
+    // shakeys coordinates
+    int x = 0; int y = 0;
 
-    // shakeys coordinates, starts at (x, y) = (1, 1).
-    int x = 0;
-    int y = 0;
-
-    // control shakey direction.
+    // control shakey facing direction.
     char direction = 'E';
 
-    
     // ask for user input to create garden size.
     int rows;
-    std::cout << "Enter rows: ";
-    std::cin >> rows;
-    system("cls"); // reset the console.
+    cout << "Enter rows: ";
+    cin >> rows;
+    system("cls");
     int columns;
-    std::cout << "Enter columns: ";
-    std::cin >> columns;
-    system("cls"); // reset the console.
+    cout << "Enter columns: ";
+    cin >> columns;
+    system("cls");
 
     // create a 2D array named garden, with the user defined size.
     vector<vector<string>> garden(rows, vector<string>(columns));
 
     Garden shakey; // create object shakey the robot.
+    Garden flower;
+    Garden rock;
+    Garden mountain;
+    Garden bush;
 
     // allocate the user defined array with the element below.
     shakey.setStartingElements(garden, rows, columns); // start the game, with the default map.
@@ -136,6 +142,7 @@ int main() {
     shakey.location(garden, x, y); // set [1, 1] to S for shakey?
     //shakey.printGarden(garden, rows, columns); // flush console and print garden.
 
+    char userInput; // store users options to execute commands
     do {
         shakey.printGarden(garden, rows, columns); // flush console and print garden.
 
@@ -143,7 +150,7 @@ int main() {
         SetConsoleTextAttribute(hConsole, 7);
         cout << "Facing: " << direction << endl;
         // show coordinates of the robots location.
-        std::cout << "Shakey coordinates: " << "(" << x + 1 << ", " << y + 1 << ")" << endl;
+        cout << "Shakey coordinates: " << "(" << x + 1 << ", " << y + 1 << ")" << endl;
         cout << "Options:\n";
         cout << "L - Move Left\n";
         cout << "R - Move Right\n";
@@ -156,24 +163,24 @@ int main() {
         userInput = toupper(userInput);
         string item; // inventory items?
         switch (userInput) {
-        case 'L':
+        case 'L': // rotate shakey to the left based on its current direction.
             SetConsoleTextAttribute(hConsole, 10);
             shakey.rotateLeft(direction);
             system("cls"); // reset the console.
             break;
-        case 'R':
+        case 'R': // rotate shakey to the right based on its current direction.
             SetConsoleTextAttribute(hConsole, 10);
             shakey.rotateRight(direction);
             system("cls"); // reset the consol.
             break;
-        case 'S':
+        case 'S': // have shakey the robot move forward in the direction they are facing.
             SetConsoleTextAttribute(hConsole, 10);
             system("cls");
             garden[y][x] = "* ";
             shakey.step(direction, x, y, rows, columns);
             shakey.location(garden, x, y);
             break;
-        case 'P':
+        case 'P': // pick up the item that shakey is standing on.
             SetConsoleTextAttribute(hConsole, 10);
             system("cls");
             cout << "Enter item to pick up: ";
@@ -195,5 +202,4 @@ int main() {
             break;
         }
     } while (userInput != 'Q');
-    return 0;
 }
