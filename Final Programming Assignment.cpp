@@ -27,7 +27,7 @@ public:
     }
 
     /* TEMPORARY -----> set the location of the robot. <----- TEMPORARY */
-    void location(std::vector<vector<string>>& shakey, int x, int y) {
+    void location(std::vector<vector<string>>& shakey, int& x, int& y) {
         shakey[x][y] = "S ";
     }
 
@@ -64,19 +64,19 @@ public:
     }
 
     // control for shakey the robot to step forward based on which way they are facing.
-    vector<int> step(char direction, vector<int>& shakeyGrid, int x, int y, int rows, int columns) {
-        shakeyGrid = { x, y }; 
+   void step(char direction, int &x, int &y, int rows, int columns) {
+      
         if (direction == 'N') {
-            if (y > 0) y--; return shakeyGrid;
+            if (y > 0) y--;
         }
         else if (direction == 'E') {
-            if (x < columns) x++; return shakeyGrid;
+            if (x < columns) x++;
         }
         else if (direction == 'S') {
-            if (y < rows) y++; return shakeyGrid;
+            if (y < rows) y++;
         }
         else if (direction == 'W') {
-            if (x > 0) x--; return shakeyGrid;
+            if (x > 0) x--;
         }
     }
 
@@ -96,7 +96,7 @@ public:
 };
 
 int main() {
-    
+
     char userInput; // store users options to execute commands.
 
     // shakeys coordinates, starts at (x, y) = (1, 1).
@@ -117,7 +117,7 @@ int main() {
 
     // create a 2D array named garden, with the user defined size.
     vector<vector<string>> garden(rows, vector<string>(columns));
-    
+
     vector<int> shakeyGrid;
 
     Garden shakey; // create object shakey the robot.
@@ -126,7 +126,7 @@ int main() {
     shakey.setStartingElements(garden, rows, columns); // start the game, with the default map.
 
     /* TEMPORARY -----> set the location of the robot. <----- TEMPORARY */
-    shakey.location(garden, x, y); // set [1, 1] to S for shakey?
+    //shakey.location(garden, x, y); // set [1, 1] to S for shakey?
     //shakey.printGarden(garden, rows, columns); // flush console and print garden.
 
     do {
@@ -156,9 +156,10 @@ int main() {
             break;
         case 'S':
             system("cls");
-            shakeyGrid = shakey.step(direction, shakeyGrid, x, y, rows, columns);
-            x = shakeyGrid[0];
-            y = shakeyGrid[1];
+            garden[x][y] = "* ";
+            shakey.step(direction, x, y, rows, columns);
+            shakey.location(garden, x, y);
+
             std::cout << "Shakey coordinates: " << x << " " << y << endl;
             /*x = shakey.step(direction, x, y, rows, columns);
             y = shakey.step(direction, x, y, rows, columns);*/
