@@ -40,7 +40,7 @@ public:
             for (int j = 0; j < y; j++) {
                 SetConsoleTextAttribute(hConsole, 10);
                 shakey[i][j] = "* "; // set each element in the 2D array to this element.
-                
+
             }
         }
     }
@@ -152,11 +152,11 @@ void startGame() {
         // show coordinates of the robots location.
         cout << "Shakey coordinates: " << "(" << x + 1 << ", " << y + 1 << ")" << endl;
         cout << "Options:\n";
-        cout << "L - Move Left\n";
-        cout << "R - Move Right\n";
+        cout << "L - Rotate Left\n";
+        cout << "R - Rotate Right\n";
         cout << "P - Pick Up Item\n";
         cout << "I - Show Inventory\n";
-        cout << "S - Step\n";
+        cout << "S - Step Forward\n";
         cout << "Q - Quit\n";
         cout << "Enter your choice: ";
         cin >> userInput;
@@ -166,12 +166,12 @@ void startGame() {
         case 'L': // rotate shakey to the left based on its current direction.
             SetConsoleTextAttribute(hConsole, 10);
             shakey.rotateLeft(direction);
-            system("cls"); // reset the console.
+            system("cls");
             break;
         case 'R': // rotate shakey to the right based on its current direction.
             SetConsoleTextAttribute(hConsole, 10);
             shakey.rotateRight(direction);
-            system("cls"); // reset the consol.
+            system("cls");
             break;
         case 'S': // have shakey the robot move forward in the direction they are facing.
             SetConsoleTextAttribute(hConsole, 10);
