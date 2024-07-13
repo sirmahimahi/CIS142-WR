@@ -11,7 +11,7 @@ cannot be destroyed */
 
 #include <iostream>
 #include <vector>
-#include <cctype>
+#include <random>
 #include <windows.h>
 using namespace std;
 
@@ -24,18 +24,42 @@ public:
     void printGarden(vector<vector<string>>& locGarden, int locRows, int locColumns) {
         for (int i = 0; i < locRows; i++) {
             for (int j = 0; j < locColumns; j++) {
-                if (locGarden[i][j] == "# ") {
-                    SetConsoleTextAttribute(hConsole, 8); // gray color for fence
-                }
-                else if (locGarden[i][j] == "S ") {
-                    SetConsoleTextAttribute(hConsole, 12); // red color for Shakey
-                }
-                else {
-                    SetConsoleTextAttribute(hConsole, 10); // green color for garden
-                }
+                if (locGarden[i][j] == "# ") { 
+                    SetConsoleTextAttribute(hConsole, 8); } // gray color for fence
+                else if (locGarden[i][j] == "S ") { 
+                    SetConsoleTextAttribute(hConsole, 12); } // red color for Shakey
+                else if (locGarden[i][j] == "B ") { 
+                    SetConsoleTextAttribute(hConsole, 5); } // purple color for bush
+                else if (locGarden[i][j] == "F ") { 
+                    SetConsoleTextAttribute(hConsole, 6); } // yellow color for flower
+                else if (locGarden[i][j] == "M ") { 
+                    SetConsoleTextAttribute(hConsole, 7); } // white color for mountain
+                else if (locGarden[i][j] == "T ") { 
+                    SetConsoleTextAttribute(hConsole, 10); } // bright green color for tree
+                else if (locGarden[i][j] == "W ") { 
+                    SetConsoleTextAttribute(hConsole, 9); } // blue color for water
+                else { 
+                    SetConsoleTextAttribute(hConsole, 8); } // green color for garden}
                 cout << locGarden[i][j]; // print each element in the predefined garden.
             }
-            cout << endl; // create a new row after each row is complete.
+            // cout << endl; // create a new row after each row is complete.
+            switch (i) {
+            case 0:
+                cout << "\tLegend:\n";
+                break;
+            case 1:
+                cout << "\tS - Shakey\t B - Bush\n";
+                break;
+            case 2:
+                cout << "\tF - Flower\t M - Mountain\n";
+                break;
+            case 3:
+                cout << "\tT - Tree\t W - Water\n";
+                break;
+            default:
+                cout << endl;
+                break;
+            }
         }
     }
 
@@ -46,12 +70,45 @@ public:
 
     // sets every value in the user defined array to the default value '*'.
     void setStartingElements(vector<vector<string>>& shakey, int x, int y) {
+        random_device rd; // create random number generator.
+        mt19937 rng(rd()); // generator seed.
+        uniform_int_distribution<mt19937::result_type> randX(1, x - 2); // set value.
+        uniform_int_distribution<mt19937::result_type> randY(1, y - 2);
+        int randomX = randX(rng);
+        int randomY = randX(rng);
+        // set each element in the 2D array to this element.
         for (int i = 0; i < x; i++) {
-            for (int j = 0; j < y; j++) {
-                shakey[i][j] = "* "; // set each element in the 2D array to this element.
+            for (int j = 0; j < y; j++) { 
+                shakey[i][j] = "* ";
             }
         }
+        // generate random location for other items in shakey's world.
+        for (int i = 0; i < (x + y)/2; i++) {
+            randomX = randX(rng); randomY = randX(rng);
+            shakey[randomX][randomY] = "B ";
+            randomX = randX(rng); randomY = randX(rng);
+            shakey[randomX][randomY] = "F ";
+            randomX = randX(rng); randomY = randX(rng);
+            shakey[randomX][randomY] = "T ";
+            randomX = randX(rng); randomY = randX(rng);
+            shakey[randomX][randomY] = "M ";
+            randomX = randX(rng); randomY = randX(rng);
+            shakey[randomX][randomY] = "W ";
+        }
+        for (int i = 0; i < x + y; i++) {
+            randomX = randX(rng); randomY = randX(rng);
+            shakey[randomX][randomY] = "B ";
+            randomX = randX(rng); randomY = randX(rng);
+            shakey[randomX][randomY] = "F ";
+        }
+
     }
+
+    
+    
+
+
+
     // creating/offseting fence
     void createFence(vector<vector<string>>& shakey, int rows, int columns) {
         for (int i = 0; i < rows; ++i) {
@@ -66,43 +123,40 @@ public:
 
     // run if user rotates shakey left by 90 degrees.
     void rotateRight(char& direction) {
-        if (direction == 'N')
-            direction = 'E';
-        else if (direction == 'E')
-            direction = 'S';
-        else if (direction == 'S')
-            direction = 'W';
-        else if (direction == 'W')
-            direction = 'N';
+        if (direction == 'N') { direction = 'E'; }
+        else if (direction == 'E') { 
+            direction = 'S'; }
+        else if (direction == 'S') { 
+            direction = 'W'; }
+        else if (direction == 'W') { 
+            direction = 'N'; }
     }
 
     // run if user rotates shakey right by 90 degrees.
     void rotateLeft(char& direction) {
-        if (direction == 'N')
-            direction = 'W';
-        else if (direction == 'E')
-            direction = 'N';
-        else if (direction == 'S')
-            direction = 'E';
-        else if (direction == 'W')
-            direction = 'S';
+        if (direction == 'N') { direction = 'W'; }
+        else if (direction == 'E') { 
+            direction = 'N'; }
+        else if (direction == 'S') { 
+            direction = 'E'; }
+        else if (direction == 'W') { 
+            direction = 'S'; }
     }
 
     // control for shakey the robot to step forward based on which way they are facing.
-    void step(char direction, int& x, int& y, int rows, int columns) {
-        if (direction == 'N') {
-            if (y > 1) y--;
-        }
-        else if (direction == 'E') {
-            if (x + 1 < columns - 1) x++;
-        }
-        else if (direction == 'S') {
-            if (y + 1 < rows - 1) y++;
-        }
-        else if (direction == 'W') {
-            if (x > 1) x--;
-        }
-        else std::cout << "Out of bounds!\n";
+    void step(vector<vector<string>>& garden, char direction, int& x, int& y, int rows, int columns) {
+        /*if (garden[y][x] == "F ") { garden[y][x] = "F "; }
+        else if (garden[y][x] == "B ") { garden[y][x] = "B "; }
+        else if (garden[y][x] == "F ") { garden[y][x] = "F "; }
+        else if (garden[y][x] == "M ") { garden[y][x] = "M "; }*/
+        
+        if (direction == 'N') { if (y > 1) y--; }
+        else if (direction == 'E') { 
+            if (x + 1 < columns - 1) x++; }
+        else if (direction == 'S') { 
+            if (y + 1 < rows - 1) y++; }
+        else if (direction == 'W') { 
+            if (x > 1) x--; }
     }
 
     vector<std::string> inventory; // stores inventory items for shakey.
@@ -150,10 +204,6 @@ void startGame() {
     vector<vector<string>> garden(rows, vector<string>(columns));
 
     Garden shakey; // create object shakey the robot.
-    Garden flower;
-    Garden rock;
-    Garden mountain;
-    Garden bush;
 
     // allocate the user defined array with the element below.
     shakey.setStartingElements(garden, rows, columns); // start the game, with the default map.
@@ -196,8 +246,8 @@ void startGame() {
         case 'S': // have shakey the robot move forward in the direction they are facing.
             SetConsoleTextAttribute(hConsole, 10);
             system("cls");
-            garden[y][x] = "* ";
-            shakey.step(direction, x, y, rows, columns);
+            //garden[y][x] = "* ";
+            shakey.step(garden, direction, x, y, rows, columns);
             shakey.location(garden, x, y);
             break;
         case 'P': // pick up the item that shakey is standing on.
