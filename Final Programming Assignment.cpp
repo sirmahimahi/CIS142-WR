@@ -82,26 +82,22 @@ public:
                 shakey[i][j] = "* ";
             }
         }
-        // generate random location for other items in shakey's world.
-        for (int i = 0; i < (x + y)/2; i++) {
-            randomX = randX(rng); randomY = randX(rng);
-            shakey[randomX][randomY] = "B ";
-            randomX = randX(rng); randomY = randX(rng);
-            shakey[randomX][randomY] = "F ";
-            randomX = randX(rng); randomY = randX(rng);
+        
+        for (int i = 0; i < (x + y)/2; i++) { // generate random location for other items in shakey's world.
+            randomX = randX(rng); randomY = randY(rng);
             shakey[randomX][randomY] = "T ";
-            randomX = randX(rng); randomY = randX(rng);
+            randomX = randX(rng); randomY = randY(rng);
             shakey[randomX][randomY] = "M ";
-            randomX = randX(rng); randomY = randX(rng);
+            randomX = randX(rng); randomY = randY(rng);
             shakey[randomX][randomY] = "W ";
         }
-        for (int i = 0; i < x + y; i++) {
-            randomX = randX(rng); randomY = randX(rng);
+
+        for (int i = 0; i < x + y; i++) { // generate bushes and flowers more often.
+            randomX = randX(rng); randomY = randY(rng);
             shakey[randomX][randomY] = "B ";
-            randomX = randX(rng); randomY = randX(rng);
+            randomX = randX(rng); randomY = randY(rng);
             shakey[randomX][randomY] = "F ";
         }
-
     }
 
     // creating/offseting fence
