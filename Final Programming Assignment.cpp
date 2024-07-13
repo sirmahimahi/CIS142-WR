@@ -42,7 +42,7 @@ public:
                     SetConsoleTextAttribute(hConsole, 8); } // green color for garden}
                 cout << locGarden[i][j]; // print each element in the predefined garden.
             }
-            // cout << endl; // create a new row after each row is complete.
+            // print legend on right side of garden map.
             switch (i) {
             case 0:
                 cout << "\tLegend:\n";
@@ -104,11 +104,6 @@ public:
 
     }
 
-    
-    
-
-
-
     // creating/offseting fence
     void createFence(vector<vector<string>>& shakey, int rows, int columns) {
         for (int i = 0; i < rows; ++i) {
@@ -123,7 +118,8 @@ public:
 
     // run if user rotates shakey left by 90 degrees.
     void rotateRight(char& direction) {
-        if (direction == 'N') { direction = 'E'; }
+        if (direction == 'N') { 
+            direction = 'E'; }
         else if (direction == 'E') { 
             direction = 'S'; }
         else if (direction == 'S') { 
@@ -134,7 +130,8 @@ public:
 
     // run if user rotates shakey right by 90 degrees.
     void rotateLeft(char& direction) {
-        if (direction == 'N') { direction = 'W'; }
+        if (direction == 'N') { 
+            direction = 'W'; }
         else if (direction == 'E') { 
             direction = 'N'; }
         else if (direction == 'S') { 
