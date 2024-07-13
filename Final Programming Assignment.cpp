@@ -13,9 +13,10 @@ cannot be destroyed */
 #include <vector>
 #include <cctype>
 #include <windows.h>
-
-HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE); // control colors.
 using namespace std;
+
+// only works on windows terminal
+HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE); // control colors.
 
 class Garden {
 public:
@@ -38,7 +39,7 @@ public:
         }
     }
 
-    /* TEMPORARY -----> set the location of the robot. <----- TEMPORARY */
+    // set the location of the robot.
     void location(std::vector<vector<string>>& shakey, int& x, int& y) {
         shakey[y][x] = "S ";
     }
@@ -137,10 +138,12 @@ void startGame() {
     int rows;
     cout << "Enter rows: ";
     cin >> rows;
+    rows = rows + 2;
     system("cls");
     int columns;
     cout << "Enter columns: ";
     cin >> columns;
+    columns = columns + 2;
     system("cls");
 
     // create a 2D array named garden, with the user defined size.
@@ -167,7 +170,7 @@ void startGame() {
         SetConsoleTextAttribute(hConsole, 7);
         cout << "Facing: " << direction << endl;
         // show coordinates of the robots location.
-        cout << "Shakey coordinates: " << "(" << x + 1 << ", " << y + 1 << ")" << endl;
+        cout << "Shakey coordinates: " << "(" << x << ", " << y << ")" << endl;
         cout << "Options:\n";
         cout << "L - Rotate Left\n";
         cout << "R - Rotate Right\n";
