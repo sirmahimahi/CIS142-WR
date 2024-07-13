@@ -23,6 +23,15 @@ public:
     void printGarden(vector<vector<string>>& locGarden, int locRows, int locColumns) {
         for (int i = 0; i < locRows; i++) {
             for (int j = 0; j < locColumns; j++) {
+                if (locGarden[i][j] == "# ") {
+                    SetConsoleTextAttribute(hConsole, 8); // gray color for fence
+                }
+                else if (locGarden[i][j] == "S ") {
+                    SetConsoleTextAttribute(hConsole, 12); // red color for Shakey
+                }
+                else {
+                    SetConsoleTextAttribute(hConsole, 10); // green color for garden
+                }
                 cout << locGarden[i][j]; // print each element in the predefined garden.
             }
             cout << endl; // create a new row after each row is complete.
@@ -38,10 +47,19 @@ public:
     void setStartingElements(vector<vector<string>>& shakey, int x, int y) {
         for (int i = 0; i < x; i++) {
             for (int j = 0; j < y; j++) {
-                SetConsoleTextAttribute(hConsole, 10);
                 shakey[i][j] = "* "; // set each element in the 2D array to this element.
-
             }
+        }
+    }
+    // creating/offseting fence
+    void createFence(vector<vector<string>>& shakey, int rows, int columns) {
+        for (int i = 0; i < rows; ++i) {
+            shakey[i][0] = "# ";
+            shakey[i][columns - 1] = "# ";
+        }
+        for (int j = 0; j < columns; ++j) {
+            shakey[0][j] = "# ";
+            shakey[rows - 1][j] = "# ";
         }
     }
 
@@ -71,18 +89,17 @@ public:
 
     // control for shakey the robot to step forward based on which way they are facing.
     void step(char direction, int& x, int& y, int rows, int columns) {
-
         if (direction == 'N') {
-            if (y > 0) y--;
+            if (y > 1) y--;
         }
         else if (direction == 'E') {
-            if (x + 1 < columns) x++;
+            if (x + 1 < columns - 1) x++;
         }
         else if (direction == 'S') {
-            if (y + 1 < rows) y++;
+            if (y + 1 < rows - 1) y++;
         }
         else if (direction == 'W') {
-            if (x > 0) x--;
+            if (x > 1) x--;
         }
         else std::cout << "Out of bounds!\n";
     }
@@ -111,7 +128,7 @@ int main() {
 
 void startGame() {
     // shakeys coordinates
-    int x = 0; int y = 0;
+    int x = 1; int y = 1;
 
     // control shakey facing direction.
     char direction = 'E';
@@ -137,10 +154,10 @@ void startGame() {
 
     // allocate the user defined array with the element below.
     shakey.setStartingElements(garden, rows, columns); // start the game, with the default map.
+    shakey.createFence(garden, rows, columns); // create the fence around the garden.
 
     /* TEMPORARY -----> set the location of the robot. <----- TEMPORARY */
     shakey.location(garden, x, y); // set [1, 1] to S for shakey?
-    //shakey.printGarden(garden, rows, columns); // flush console and print garden.
 
     char userInput; // store users options to execute commands
     do {
