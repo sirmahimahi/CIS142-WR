@@ -127,8 +127,8 @@ public:
             cout << "Shakey cannot move foward, there is an obstacle in the way!\n"; }
     }
 
-    vector<string> inventory; // stores inventory items for shakey.
-    void pickUpItem(vector<vector<string>>& garden, char direction, int& x, int& y, int rows, int columns) {
+     // stores inventory items for shakey.
+    void pickUpItem(vector<string>& inventory, vector<vector<string>>& garden, char direction, int& x, int& y, int rows, int columns) {
         int yMinus = y - 1; int yPlus = y + 1; int xMinus = x - 1; int xPlus = x + 1; 
         string item; // store the array value from gardenp[y][x].
         // check to make sure its facing the right way, there is no obstacle, it does not go out of bounds.
@@ -162,7 +162,7 @@ public:
         }
     }
 
-    void showInventory() const {
+    void showInventory(vector<string>& inventory) const {
         cout << "Inventory: ";
         for (const auto& item : inventory) {
             cout << item << " ";
@@ -202,6 +202,7 @@ void startGame() {
 
     // create a 2D array named garden, with the user defined size.
     vector<vector<string>> garden(rows, vector<string>(columns));
+    vector<string> inventory; // create an inventory array to store items.
     // create object shakey the robot.
     Garden shakey;
 
@@ -254,13 +255,13 @@ void startGame() {
         case 'P': // pick up the item that shakey is standing on.
             SetConsoleTextAttribute(hConsole, 10);
             system("cls");
-            shakey.pickUpItem(garden, direction, x, y, rows, columns); // pick up item in front of shakey.
+            shakey.pickUpItem(inventory, garden, direction, x, y, rows, columns); // pick up item in front of shakey.
             shakey.location(garden, x, y); // update the location of shakey in the array.
             break;
         case 'I':
             SetConsoleTextAttribute(hConsole, 10);
             system("cls");
-            shakey.showInventory(); // call class method showInventory.
+            shakey.showInventory(inventory); // call class method showInventory.
             break;
         case 'Q':
             system("cls");
@@ -268,7 +269,9 @@ void startGame() {
             break;
         case 'X': // prompt the user to create a new garden if they are soft locked.
             system("cls");
-            garden.clear();
+            garden.clear(); 
+            inventory.clear();
+            direction = 'E';
             x = 1; y = 1;
             cout << "Enter rows: ";
             cin >> rows;
