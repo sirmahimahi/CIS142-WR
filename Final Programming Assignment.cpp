@@ -283,14 +283,16 @@ void printGarden(vector<vector<string>>& locGarden, int locRows, int locColumns)
             cout << "\tLegend:\n";
             break;
         case 1:
-            cout << "\tS - Shakey\t B - Bush\n";
+            cout << "\tS - Shakey\tB - Bush\n";
             break;
         case 2:
-            cout << "\tF - Flower\t M - Mountain\n";
+            cout << "\tF - Flower\tM - Mountain\n";
             break;
         case 3:
-            cout << "\tT - Tree\t W - Water\n";
+            cout << "\tT - Tree\tW - Water\n";
             break;
+        case 4:
+            cout << "\t# - Fence\t* - Empty space";
         default:
             cout << endl;
             break;
