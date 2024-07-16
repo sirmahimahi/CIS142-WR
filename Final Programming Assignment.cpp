@@ -21,7 +21,7 @@ HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE); // control colors.
 class Garden {
 public:
     // set the location of the robot.
-    void location(std::vector<vector<string>>& shakey, int& x, int& y) {
+    void location(vector<vector<string>>& shakey, int& x, int& y) {
         shakey[y][x] = "S ";
     }
 
@@ -65,25 +65,23 @@ public:
         int yMinus = y - 1; int yPlus = y + 1; int xMinus = x - 1; int xPlus = x + 1; // local variables to check if next step is valid.
         // check to make sure its facing the right way, there is no obstacle, it does not go out of bounds.
         if ((direction == 'N') && (garden[yMinus][x] == "* " || garden[yMinus][x] == "F " || garden[yMinus][x] == "B ") && (y > 1)) {
-            clearLocation(garden, x, y);
-            y--; 
-    }
+            clearLocation(garden, x, y); y--; 
+        }
         else if ((direction == 'E') && (garden[y][xPlus] == "* " || garden[y][xPlus] == "F " || garden[y][xPlus] == "B ") && (x + 1 < columns - 1)) {
-            clearLocation(garden, x, y);
-            x++; 
+            clearLocation(garden, x, y); x++; 
         }
         else if ((direction == 'S') && (garden[yPlus][x] == "* " || garden[yPlus][x] == "F " || garden[yPlus][x] == "B ") && (y + 1 < rows - 1)) {
-            clearLocation(garden, x, y);
-            y++; 
+            clearLocation(garden, x, y); y++; 
         }
         else if ((direction == 'W') && (garden[y][xMinus] == "* " || garden[y][xMinus] == "F " || garden[y][xMinus] == "B ") && (x > 1)) {
-            clearLocation(garden, x, y);
-            x--; 
+            clearLocation(garden, x, y); x--; 
         }
-        else { cout << "Shakey cannot move foward, there is an obstacle in the way.\n"; }
+        else {
+            SetConsoleTextAttribute(hConsole, 12); // red for warning
+            cout << "Shakey cannot move foward, there is an obstacle in the way.\n"; }
     }
 
-    vector<std::string> inventory; // stores inventory items for shakey.
+    vector<string> inventory; // stores inventory items for shakey.
     void pickUpItem(const string& item) {
         inventory.push_back(item);
         cout << "Picked up " << item << endl;
@@ -136,8 +134,8 @@ void startGame() {
     setStartingElements(garden, rows, columns); // start the game, with the default map.
     createFence(garden, rows, columns); // create the fence around the garden.
 
-    /* TEMPORARY -----> set the location of the robot. <----- TEMPORARY */
-    shakey.location(garden, x, y); // set [1, 1] to S for shakey?
+    // set the location of the robot.
+    shakey.location(garden, x, y); // set [1, 1] to S for shakey.
 
     char userInput; // store users options to execute commands
     do {
@@ -235,13 +233,14 @@ void setStartingElements(vector<vector<string>>& shakey, int x, int y) {
 
 // creating/offseting fence
 void createFence(vector<vector<string>>& shakey, int rows, int columns) {
+    int col = columns - 1; int row = rows - 1; // local values to prevent overflow.
     for (int i = 0; i < rows; ++i) {
         shakey[i][0] = "# ";
-        shakey[i][columns - 1] = "# ";
+        shakey[i][col] = "# ";
     }
     for (int j = 0; j < columns; ++j) {
         shakey[0][j] = "# ";
-        shakey[rows - 1][j] = "# ";
+        shakey[row][j] = "# ";
     }
 }
 
@@ -252,6 +251,9 @@ void printGarden(vector<vector<string>>& locGarden, int locRows, int locColumns)
             if (locGarden[i][j] == "# ") {
                 SetConsoleTextAttribute(hConsole, 8);
             } // gray color for fence
+            else if (locGarden[i][j] == "* ") {
+                SetConsoleTextAttribute(hConsole, 8);
+            } // grey color for Shakey
             else if (locGarden[i][j] == "S ") {
                 SetConsoleTextAttribute(hConsole, 12);
             } // red color for Shakey
@@ -272,7 +274,7 @@ void printGarden(vector<vector<string>>& locGarden, int locRows, int locColumns)
             } // blue color for water
             else {
                 SetConsoleTextAttribute(hConsole, 8);
-            } // green color for garden}
+            } // grey color for garden}
             cout << locGarden[i][j]; // print each element in the predefined garden.
         }
         // print legend on right side of garden map.
