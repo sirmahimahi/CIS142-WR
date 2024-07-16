@@ -78,13 +78,38 @@ public:
         }
         else {
             SetConsoleTextAttribute(hConsole, 12); // red for warning
-            cout << "Shakey cannot move foward, there is an obstacle in the way.\n"; }
+            cout << "Shakey cannot move foward, there is an obstacle in the way!\n"; }
     }
 
     vector<string> inventory; // stores inventory items for shakey.
-    void pickUpItem(const string& item) {
-        inventory.push_back(item);
-        cout << "Picked up " << item << endl;
+    void pickUpItem(vector<vector<string>>& garden, char direction, int& x, int& y, int rows, int columns) {
+        int yMinus = y - 1; int yPlus = y + 1; int xMinus = x - 1; int xPlus = x + 1; 
+        string item; // store the array value from gardenp[y][x].
+        // check to make sure its facing the right way, there is no obstacle, it does not go out of bounds.
+        if ((direction == 'N') && (garden[yMinus][x] == "F " || garden[yMinus][x] == "B ") && (y > 1)) {
+            item = garden[yMinus][x]; // set item to the value in front of robot.
+            clearLocation(garden, x, yMinus); // clear item in front of robot.
+            inventory.push_back(item); // add item in front of robot to inventory.
+        }
+        else if ((direction == 'E') && (garden[y][xPlus] == "F " || garden[y][xPlus] == "B ") && (x + 1 < columns - 1)) {
+            item = garden[y][xPlus];
+            clearLocation(garden, xPlus, y);
+            inventory.push_back(item);
+        }
+        else if ((direction == 'S') && (garden[yPlus][x] == "F " || garden[yPlus][x] == "B ") && (y + 1 < rows - 1)) {
+            item = garden[yPlus][x];
+            clearLocation(garden, x, yPlus);
+            inventory.push_back(item);
+        }
+        else if ((direction == 'W') && (garden[y][xMinus] == "F " || garden[y][xMinus] == "B ") && (x > 1)) {
+            item = garden[y][xMinus];
+            clearLocation(garden, xMinus, y);
+            inventory.push_back(item);
+        }
+        else {
+            SetConsoleTextAttribute(hConsole, 12); // red for warning
+            cout << "There is no item to pick up!\n";
+        }
     }
 
     void showInventory() const {
@@ -165,7 +190,7 @@ void startGame() {
             break;
         case 'R': // rotate shakey to the right based on its current direction.
             SetConsoleTextAttribute(hConsole, 10);
-            shakey.rotateRight(direction);
+            shakey.rotateRight(direction); 
             system("cls");
             break;
         case 'S': // have shakey the robot move forward in the direction they are facing.
@@ -178,14 +203,13 @@ void startGame() {
         case 'P': // pick up the item that shakey is standing on.
             SetConsoleTextAttribute(hConsole, 10);
             system("cls");
-            cout << "Enter item to pick up: ";
-            cin >> item;
-            shakey.pickUpItem(item);
+            shakey.pickUpItem(garden, direction, x, y, rows, columns); // pick up item in front of shakey.
+            shakey.location(garden, x, y); // update the location of shakey in the array.
             break;
         case 'I':
             SetConsoleTextAttribute(hConsole, 10);
             system("cls");
-            shakey.showInventory();
+            shakey.showInventory(); // call class method showInventory.
             break;
         case 'Q':
             system("cls");
