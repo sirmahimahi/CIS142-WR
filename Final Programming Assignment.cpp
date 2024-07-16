@@ -27,37 +27,45 @@ public:
 
     // run if user rotates shakey left by 90 degrees.
     void rotateRight(char& direction) {
-        if (direction == 'N') { 
-            direction = 'E'; }
-        else if (direction == 'E') { 
-            direction = 'S'; }
-        else if (direction == 'S') { 
-            direction = 'W'; }
-        else if (direction == 'W') { 
-            direction = 'N'; }
+        if (direction == 'N') {
+            direction = 'E';
+        }
+        else if (direction == 'E') {
+            direction = 'S';
+        }
+        else if (direction == 'S') {
+            direction = 'W';
+        }
+        else if (direction == 'W') {
+            direction = 'N';
+        }
     }
 
     // run if user rotates shakey right by 90 degrees.
     void rotateLeft(char& direction) {
-        if (direction == 'N') { 
-            direction = 'W'; }
-        else if (direction == 'E') { 
-            direction = 'N'; }
-        else if (direction == 'S') { 
-            direction = 'E'; }
-        else if (direction == 'W') { 
-            direction = 'S'; }
+        if (direction == 'N') {
+            direction = 'W';
+        }
+        else if (direction == 'E') {
+            direction = 'N';
+        }
+        else if (direction == 'S') {
+            direction = 'E';
+        }
+        else if (direction == 'W') {
+            direction = 'S';
+        }
     }
 
     // control for shakey the robot to step forward based on which way they are facing.
     void step(vector<vector<string>>& garden, char direction, int& x, int& y, int rows, int columns) {
-        if (direction == 'N') { if (y > 1) y--; }
-        else if (direction == 'E') { 
-            if (x + 1 < columns - 1) x++; }
-        else if (direction == 'S') { 
-            if (y + 1 < rows - 1) y++; }
-        else if (direction == 'W') { 
-            if (x > 1) x--; }
+        int yMinus = y - 1; int yPlus = y + 1; int xMinus = x - 1; int xPlus = x + 1; // local variables to check if next step is valid.
+        // check to make sure its facing the right way, there is no obstacle, it does not go out of bounds.
+        if ((direction == 'N') && (garden[yMinus][x] == "* " || garden[yMinus][x] == "F " || garden[yMinus][x] == "B ") && (y > 1)) {y--; }
+        else if ((direction == 'E') && (garden[y][xPlus] == "* " || garden[y][xPlus] == "F " || garden[y][xPlus] == "B ") && (x + 1 < columns - 1)) { x++; }
+        else if ((direction == 'S') && (garden[yPlus][x] == "* " || garden[yPlus][x] == "F " || garden[yPlus][x] == "B ") && (y + 1 < rows - 1)) { y++; }
+        else if ((direction == 'W') && (garden[y][xMinus] == "* " || garden[y][xMinus] == "F " || garden[y][xMinus] == "B ") && (x > 1)) { x--; }
+        else { cout << "Shakey cannot move foward, there is an obstacle in the way.\n"; }
     }
 
     vector<std::string> inventory; // stores inventory items for shakey.
