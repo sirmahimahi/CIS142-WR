@@ -269,10 +269,10 @@ void startGame() {
             break;
         case 'X': // prompt the user to create a new garden if they are soft locked.
             system("cls");
-            garden.clear(); 
-            inventory.clear();
-            direction = 'E';
-            x = 1; y = 1;
+            garden.clear(); // clear garden array.
+            inventory.clear(); // clear inventory.
+            direction = 'E'; // set default direction.
+            x = 1; y = 1; // set default location.
             cout << "Enter rows: ";
             cin >> rows;
             rows = rows + 2;
@@ -287,6 +287,7 @@ void startGame() {
             shakey.location(garden, x, y); // set [1, 1] to S for shakey.
         default:
             system("cls");
+            SetConsoleTextAttribute(hConsole, 12);
             cout << "Invalid choice, please try again.\n";
             break;
         }
