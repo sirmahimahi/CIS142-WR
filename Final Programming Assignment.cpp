@@ -25,6 +25,9 @@ public:
         shakey[y][x] = "S ";
     }
 
+    void clearLocation(vector<vector<string>>& shakey, int x, int y) {
+        shakey[y][x] = "* ";
+    }
     // run if user rotates shakey left by 90 degrees.
     void rotateRight(char& direction) {
         if (direction == 'N') {
@@ -61,10 +64,22 @@ public:
     void step(vector<vector<string>>& garden, char direction, int& x, int& y, int rows, int columns) {
         int yMinus = y - 1; int yPlus = y + 1; int xMinus = x - 1; int xPlus = x + 1; // local variables to check if next step is valid.
         // check to make sure its facing the right way, there is no obstacle, it does not go out of bounds.
-        if ((direction == 'N') && (garden[yMinus][x] == "* " || garden[yMinus][x] == "F " || garden[yMinus][x] == "B ") && (y > 1)) {y--; }
-        else if ((direction == 'E') && (garden[y][xPlus] == "* " || garden[y][xPlus] == "F " || garden[y][xPlus] == "B ") && (x + 1 < columns - 1)) { x++; }
-        else if ((direction == 'S') && (garden[yPlus][x] == "* " || garden[yPlus][x] == "F " || garden[yPlus][x] == "B ") && (y + 1 < rows - 1)) { y++; }
-        else if ((direction == 'W') && (garden[y][xMinus] == "* " || garden[y][xMinus] == "F " || garden[y][xMinus] == "B ") && (x > 1)) { x--; }
+        if ((direction == 'N') && (garden[yMinus][x] == "* " || garden[yMinus][x] == "F " || garden[yMinus][x] == "B ") && (y > 1)) {
+            clearLocation(garden, x, y);
+            y--; 
+    }
+        else if ((direction == 'E') && (garden[y][xPlus] == "* " || garden[y][xPlus] == "F " || garden[y][xPlus] == "B ") && (x + 1 < columns - 1)) {
+            clearLocation(garden, x, y);
+            x++; 
+        }
+        else if ((direction == 'S') && (garden[yPlus][x] == "* " || garden[yPlus][x] == "F " || garden[yPlus][x] == "B ") && (y + 1 < rows - 1)) {
+            clearLocation(garden, x, y);
+            y++; 
+        }
+        else if ((direction == 'W') && (garden[y][xMinus] == "* " || garden[y][xMinus] == "F " || garden[y][xMinus] == "B ") && (x > 1)) {
+            clearLocation(garden, x, y);
+            x--; 
+        }
         else { cout << "Shakey cannot move foward, there is an obstacle in the way.\n"; }
     }
 
