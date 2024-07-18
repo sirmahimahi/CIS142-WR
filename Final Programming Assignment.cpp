@@ -28,7 +28,7 @@ public:
     void clearLocation(vector<vector<string>>& shakey, int x, int y) {
         shakey[y][x] = "* ";
     }
-    // run if user rotates shakey left by 90 degrees.
+    // run if user rotates Shakey left by 90 degrees.
     void rotateRight(char& direction) {
         if (direction == 'N') {
             direction = 'E';
@@ -45,7 +45,7 @@ public:
         cout << "Shakey rotated right!\n";
     }
 
-    // run if user rotates shakey right by 90 degrees.
+    // run if user rotates Shakey right by 90 degrees.
     void rotateLeft(char& direction) {
         if (direction == 'N') {
             direction = 'W';
@@ -62,61 +62,61 @@ public:
         cout << "Shakey rotated left!\n";
     }
 
-    // control for shakey the robot to step forward based on which way they are facing.
+    // control for Shakey the robot to step forward based on which way they are facing.
     void step(vector<vector<string>>& garden, char direction, int& x, int& y, int rows, int columns) {
-        int yMinus = y - 1; int yPlus = y + 1; int xMinus = x - 1; int xPlus = x + 1; // local variables to check if next step is valid.
-        // check to make sure its facing the right way, there is no obstacle, it does not go out of bounds.
+        int yMinus = y - 1, yPlus = y + 1, xMinus = x - 1, xPlus = x + 1; // Local variables to check if next step is valid.
+        // check to make sure it's facing the right way, there is no obstacle, it does not go out of bounds.
         if ((direction == 'N') && (garden[yMinus][x] == "* " || garden[yMinus][x] == "F " || garden[yMinus][x] == "B ") && (y > 1)) {
-            clearLocation(garden, x, y); y--; 
+            clearLocation(garden, x, y); y--;
             if (garden[yMinus][x] == "F ") {
                 SetConsoleTextAttribute(hConsole, 12); // red for warning
-                cout << "A flower has been destoryed!\n";
+                cout << "A flower has been destroyed!\n";
             }
             else if (garden[yMinus][x] == "B ") {
                 SetConsoleTextAttribute(hConsole, 12); // red for warning
-                cout << "A bush has been destoryed!\n";
+                cout << "A bush has been destroyed!\n";
             }
             else if (garden[yMinus][x] == "* ") {
                 cout << "Shakey stepped forward!\n";
             }
         }
         else if ((direction == 'E') && (garden[y][xPlus] == "* " || garden[y][xPlus] == "F " || garden[y][xPlus] == "B ") && (x + 1 < columns - 1)) {
-            clearLocation(garden, x, y); x++; 
+            clearLocation(garden, x, y); x++;
             if (garden[y][xPlus] == "F ") {
                 SetConsoleTextAttribute(hConsole, 12); // red for warning
-                cout << "A flower has been destoryed!\n";
+                cout << "A flower has been destroyed!\n";
             }
             else if (garden[y][xPlus] == "B ") {
                 SetConsoleTextAttribute(hConsole, 12); // red for warning
-                cout << "A bush has been destoryed!\n";
+                cout << "A bush has been destroyed!\n";
             }
             else if (garden[y][xPlus] == "* ") {
                 cout << "Shakey stepped forward!\n";
             }
         }
         else if ((direction == 'S') && (garden[yPlus][x] == "* " || garden[yPlus][x] == "F " || garden[yPlus][x] == "B ") && (y + 1 < rows - 1)) {
-            clearLocation(garden, x, y); y++; 
+            clearLocation(garden, x, y); y++;
             if (garden[yPlus][x] == "F ") {
                 SetConsoleTextAttribute(hConsole, 12); // red for warning
-                cout << "A flower has been destoryed!\n";
+                cout << "A flower has been destroyed!\n";
             }
             else if (garden[yPlus][x] == "B ") {
                 SetConsoleTextAttribute(hConsole, 12); // red for warning
-                cout << "A bush has been destoryed!\n";
+                cout << "A bush has been destroyed!\n";
             }
             else if (garden[yPlus][x] == "* ") {
                 cout << "Shakey stepped forward!\n";
             }
         }
         else if ((direction == 'W') && (garden[y][xMinus] == "* " || garden[y][xMinus] == "F " || garden[y][xMinus] == "B ") && (x > 1)) {
-            clearLocation(garden, x, y); x--; 
+            clearLocation(garden, x, y); x--;
             if (garden[y][xMinus] == "F ") {
                 SetConsoleTextAttribute(hConsole, 12); // red for warning
-                cout << "A flower has been destoryed!\n";
+                cout << "A flower has been destroyed!\n";
             }
             else if (garden[y][xMinus] == "B ") {
                 SetConsoleTextAttribute(hConsole, 12); // red for warning
-                cout << "A bush has been destoryed!\n";
+                cout << "A bush has been destroyed!\n";
             }
             else if (garden[y][xMinus] == "* ") {
                 cout << "Shakey stepped forward!\n";
@@ -124,18 +124,19 @@ public:
         }
         else {
             SetConsoleTextAttribute(hConsole, 12); // red for warning
-            cout << "Shakey cannot move foward, there is an obstacle in the way!\n"; }
+            cout << "Shakey cannot move forward, there is an obstacle in the way!\n";
+        }
     }
 
-     // stores inventory items for shakey.
+    // stores inventory items for shakey.
     void pickUpItem(vector<string>& inventory, vector<vector<string>>& garden, char direction, int& x, int& y, int rows, int columns) {
-        int yMinus = y - 1; int yPlus = y + 1; int xMinus = x - 1; int xPlus = x + 1; 
-        string item; // store the array value from gardenp[y][x].
-        // check to make sure its facing the right way, there is no obstacle, it does not go out of bounds.
+        int yMinus = y - 1, yPlus = y + 1, xMinus = x - 1, xPlus = x + 1;
+        string item; // store the array value from garden[y][x].
+        // check to make sure it's facing the right way, there is no obstacle, it does not go out of bounds.
         if ((direction == 'N') && (garden[yMinus][x] == "F " || garden[yMinus][x] == "B ") && (y > 1)) {
-            item = garden[yMinus][x]; // set item to the value in front of robot.
-            clearLocation(garden, x, yMinus); // clear item in front of robot.
-            inventory.push_back(item); // add item in front of robot to inventory.
+            item = garden[yMinus][x]; // set item to the value in front of the robot.
+            clearLocation(garden, x, yMinus); // clear item in front of the robot.
+            inventory.push_back(item); // add item in front of the robot to inventory.
             cout << "Shakey picked up an item!\n";
         }
         else if ((direction == 'E') && (garden[y][xPlus] == "F " || garden[y][xPlus] == "B ") && (x + 1 < columns - 1)) {
@@ -162,7 +163,43 @@ public:
         }
     }
 
-    void showInventory(vector<string>& inventory) const {
+    // drops an item from the inventory in front of Shakey.
+    void dropItem(vector<string>& inventory, vector<vector<string>>& garden, char direction, int x, int y, int rows, int columns) {
+        if (inventory.empty()) {
+            SetConsoleTextAttribute(hConsole, 12); // red for warning
+            cout << "Inventory is empty, cannot drop item!\n";
+            return;
+        }
+        int yMinus = y - 1, yPlus = y + 1, xMinus = x - 1, xPlus = x + 1;
+        string item = inventory.back(); // get the last item from inventory.
+        // check to make sure it's facing the right way, there is no obstacle, it does not go out of bounds.
+        if ((direction == 'N') && garden[yMinus][x] == "* " && y > 1) {
+            garden[yMinus][x] = item; // place item in front of the robot.
+            inventory.pop_back(); // remove item from inventory.
+            cout << "Shakey dropped an item!\n";
+        }
+        else if ((direction == 'E') && garden[y][xPlus] == "* " && x + 1 < columns - 1) {
+            garden[y][xPlus] = item; // place item in front of the robot.
+            inventory.pop_back(); // remove item from inventory.
+            cout << "Shakey dropped an item!\n";
+        }
+        else if ((direction == 'S') && garden[yPlus][x] == "* " && y + 1 < rows - 1) {
+            garden[yPlus][x] = item; // place item in front of the robot.
+            inventory.pop_back(); // remove item from inventory.
+            cout << "Shakey dropped an item!\n";
+        }
+        else if ((direction == 'W') && garden[y][xMinus] == "* " && x > 1) {
+            garden[y][xMinus] = item; // place item in front of the robot.
+            inventory.pop_back(); // remove item from inventory.
+            cout << "Shakey dropped an item!\n";
+        }
+        else {
+            SetConsoleTextAttribute(hConsole, 12); // red for warning
+            cout << "Cannot drop item here!\n";
+        }
+    }
+
+    void showInventory(const vector<string>& inventory) const {
         cout << "Inventory: ";
         for (const auto& item : inventory) {
             cout << item << " ";
@@ -182,36 +219,36 @@ int main() {
 }
 
 void startGame() {
-    // shakeys coordinates
-    int x = 1; int y = 1;
+    // shakey's coordinates
+    int x = 1, y = 1;
 
-    // control shakey facing direction.
+    // control Shakey facing direction.
     char direction = 'E';
 
     // ask for user input to create garden size.
     int rows;
     cout << "Enter rows: ";
     cin >> rows;
-    rows = rows + 2;
+    rows += 2;
     system("cls");
     int columns;
     cout << "Enter columns: ";
     cin >> columns;
-    columns = columns + 2;
+    columns += 2;
     system("cls");
 
-    // create a 2D array named garden, with the user defined size.
+    // create a 2D array named garden, with the user-defined size.
     vector<vector<string>> garden(rows, vector<string>(columns));
-    vector<string> inventory; // create an inventory array to store items.
-    // create object shakey the robot.
+    vector<string> inventory; // Create an inventory array to store items.
+    // create object Shakey the robot.
     Garden shakey;
 
-    // allocate the user defined array with the element below.
+    // allocate the user-defined array with the element below.
     setStartingElements(garden, rows, columns); // start the game, with the default map.
     createFence(garden, rows, columns); // create the fence around the garden.
 
     // set the location of the robot.
-    shakey.location(garden, x, y); // set [1, 1] to S for shakey.
+    shakey.location(garden, x, y); // set [1, 1] to S for Shakey.
 
     char userInput; // store users options to execute commands
     do {
@@ -220,48 +257,64 @@ void startGame() {
         // options menu.
         SetConsoleTextAttribute(hConsole, 7);
         cout << "Facing: " << direction << endl;
-        // show coordinates of the robots location.
+        // show coordinates of the robot's location.
         cout << "Shakey coordinates: " << "(" << x << ", " << y << ")" << endl;
         cout << "Options:\n";
         cout << "L - Rotate Left\n";
         cout << "R - Rotate Right\n";
         cout << "P - Pick Up Item\n";
+        cout << "D - Drop Item\n";
         cout << "I - Show Inventory\n";
         cout << "S - Step Forward\n";
-        cout << "X - Soft locked? Generate new garden\n";
+        cout << "H - Teleport Home (1, 1)\n";
+        cout << "X - Soft Locked? Generate new Garden\n";
         cout << "Q - Quit\n";
         cout << "Enter your choice: ";
         cin >> userInput;
         userInput = toupper(userInput);
-        
+
         switch (userInput) {
-        case 'L': // rotate shakey to the left based on its current direction.
+        case 'L': // rotate Shakey to the left based on its current direction.
             SetConsoleTextAttribute(hConsole, 10);
             system("cls");
             shakey.rotateLeft(direction);
             break;
-        case 'R': // rotate shakey to the right based on its current direction.
+        case 'R': // rotate Shakey to the right based on its current direction.
             SetConsoleTextAttribute(hConsole, 10);
             system("cls");
-            shakey.rotateRight(direction); 
+            shakey.rotateRight(direction);
             break;
-        case 'S': // have shakey the robot move forward in the direction they are facing.
+        case 'S': // have Shakey the robot move forward in the direction they are facing.
             SetConsoleTextAttribute(hConsole, 10);
             system("cls");
-            //garden[y][x] = "* ";
             shakey.step(garden, direction, x, y, rows, columns);
             shakey.location(garden, x, y);
             break;
-        case 'P': // pick up the item that shakey is standing on.
+        case 'P': // pick up the item that Shakey is standing on.
             SetConsoleTextAttribute(hConsole, 10);
             system("cls");
-            shakey.pickUpItem(inventory, garden, direction, x, y, rows, columns); // pick up item in front of shakey.
-            shakey.location(garden, x, y); // update the location of shakey in the array.
+            shakey.pickUpItem(inventory, garden, direction, x, y, rows, columns); // pick up item in front of Shakey.
+            shakey.location(garden, x, y); // update the location of Shakey in the array.
             break;
-        case 'I':
+        case 'D': // drop an item from the inventory in front of Shakey.
             SetConsoleTextAttribute(hConsole, 10);
             system("cls");
-            shakey.showInventory(inventory); // call class method showInventory.
+            shakey.dropItem(inventory, garden, direction, x, y, rows, columns);
+            shakey.location(garden, x, y); // update the location of Shakey in the array.
+            break;
+        case 'I': // show inventory.
+            SetConsoleTextAttribute(hConsole, 10);
+            system("cls");
+            shakey.showInventory(inventory);
+            break;
+        case 'H': // teleport Shakey to (1,1).
+            SetConsoleTextAttribute(hConsole, 10);
+            system("cls");
+            shakey.clearLocation(garden, x, y);
+            x = 1; y = 1;
+            shakey.location(garden, x, y);
+            direction = 'E';
+            cout << "Shakey teleported to (1,1)!\n";
             break;
         case 'Q':
             system("cls");
@@ -275,16 +328,17 @@ void startGame() {
             x = 1; y = 1; // set default location.
             cout << "Enter rows: ";
             cin >> rows;
-            rows = rows + 2;
+            rows += 2;
             system("cls");
             cout << "Enter columns: ";
             cin >> columns;
-            columns = columns + 2;
+            columns += 2;
             garden.resize(rows, vector<string>(columns));
             system("cls");
             setStartingElements(garden, rows, columns); // start the game, with the default map.
             createFence(garden, rows, columns); // create the fence around the garden.
-            shakey.location(garden, x, y); // set [1, 1] to S for shakey.
+            shakey.location(garden, x, y); // set [1, 1] to S for Shakey.
+            break;
         default:
             system("cls");
             SetConsoleTextAttribute(hConsole, 12);
@@ -294,7 +348,7 @@ void startGame() {
     } while (userInput != 'Q');
 }
 
-// sets every value in the user defined array to the default value '*'.
+// sets every value in the user-defined array to the default value '*'.
 void setStartingElements(vector<vector<string>>& garden, int x, int y) {
     random_device rd; // create random number generator.
     mt19937 rng(rd()); // generator seed.
@@ -309,7 +363,7 @@ void setStartingElements(vector<vector<string>>& garden, int x, int y) {
         }
     }
 
-    for (int i = 0; i < (x + y) / 2; i++) { // generate random location for other items in shakey's world.
+    for (int i = 0; i < (x + y) / 2; i++) { // generate random location for other items in Shakey's world.
         randomX = randX(rng); randomY = randY(rng);
         garden[randomX][randomY] = "T ";
         randomX = randX(rng); randomY = randY(rng);
@@ -326,9 +380,9 @@ void setStartingElements(vector<vector<string>>& garden, int x, int y) {
     }
 }
 
-// creating/offseting fence
+// creating/offsetting fence
 void createFence(vector<vector<string>>& shakey, int rows, int columns) {
-    int col = columns - 1; int row = rows - 1; // local values to prevent overflow.
+    int col = columns - 1, row = rows - 1; // local values to prevent overflow.
     for (int i = 0; i < rows; ++i) {
         shakey[i][0] = "# ";
         shakey[i][col] = "# ";
@@ -348,7 +402,7 @@ void printGarden(vector<vector<string>>& locGarden, int locRows, int locColumns)
             } // gray color for fence
             else if (locGarden[i][j] == "* ") {
                 SetConsoleTextAttribute(hConsole, 8);
-            } // grey color for Shakey
+            } // gray color for empty space
             else if (locGarden[i][j] == "S ") {
                 SetConsoleTextAttribute(hConsole, 12);
             } // red color for Shakey
@@ -369,7 +423,7 @@ void printGarden(vector<vector<string>>& locGarden, int locRows, int locColumns)
             } // blue color for water
             else {
                 SetConsoleTextAttribute(hConsole, 8);
-            } // grey color for garden}
+            } // gray color for garden
             cout << locGarden[i][j]; // print each element in the predefined garden.
         }
         // print legend on right side of garden map.
