@@ -30,35 +30,19 @@ public:
     }
     // run if user rotates Shakey left by 90 degrees.
     void rotateRight(char& direction) {
-        if (direction == 'N') {
-            direction = 'E';
-        }
-        else if (direction == 'E') {
-            direction = 'S';
-        }
-        else if (direction == 'S') {
-            direction = 'W';
-        }
-        else if (direction == 'W') {
-            direction = 'N';
-        }
+        if (direction == 'N') { direction = 'E'; }
+        else if (direction == 'E') { direction = 'S'; }
+        else if (direction == 'S') { direction = 'W'; }
+        else if (direction == 'W') { direction = 'N'; }
         cout << "Shakey rotated right!\n";
     }
 
     // run if user rotates Shakey right by 90 degrees.
     void rotateLeft(char& direction) {
-        if (direction == 'N') {
-            direction = 'W';
-        }
-        else if (direction == 'E') {
-            direction = 'N';
-        }
-        else if (direction == 'S') {
-            direction = 'E';
-        }
-        else if (direction == 'W') {
-            direction = 'S';
-        }
+        if (direction == 'N') { direction = 'W'; }
+        else if (direction == 'E') { direction = 'N'; }
+        else if (direction == 'S') { direction = 'E'; }
+        else if (direction == 'W') { direction = 'S'; }
         cout << "Shakey rotated left!\n";
     }
 
@@ -210,7 +194,7 @@ public:
 
 void startGame(); // prompt the user to create garden and give the user options.
 void setStartingElements(vector<vector<string>>&, int, int); // set default values for given user parameters.
-void createFence(vector<vector<string>>&, int, int); // create the fence that acts as a barrier around the garden.
+void setFence(vector<vector<string>>&, int, int); // create the fence that acts as a barrier around the garden.
 void printGarden(vector<vector<string>>&, int, int); // print the garden with the values provided.
 
 int main() {
@@ -227,6 +211,8 @@ void startGame() {
 
     // ask for user input to create garden size.
     int rows;
+    cout << "Welcome to Shakey's Procedurally Generated Garden.\n";
+    cout << "Below you will be able to define the size of the garden.\n";
     cout << "Enter rows: ";
     cin >> rows;
     rows += 2;
@@ -245,12 +231,12 @@ void startGame() {
 
     // allocate the user-defined array with the element below.
     setStartingElements(garden, rows, columns); // start the game, with the default map.
-    createFence(garden, rows, columns); // create the fence around the garden.
+    setFence(garden, rows, columns); // create the fence around the garden.
 
     // set the location of the robot.
     shakey.location(garden, x, y); // set [1, 1] to S for Shakey.
-
-    char userInput; // store users options to execute commands
+    cout << "Shakey's Garden has been generated.\n";
+    char userInput; // store user option to execute commands
     do {
         printGarden(garden, rows, columns); // flush console and print garden.
 
@@ -336,10 +322,11 @@ void startGame() {
             garden.resize(rows, vector<string>(columns));
             system("cls");
             setStartingElements(garden, rows, columns); // start the game, with the default map.
-            createFence(garden, rows, columns); // create the fence around the garden.
+            setFence(garden, rows, columns); // create the fence around the garden.
             shakey.location(garden, x, y); // set [1, 1] to S for Shakey.
+            cout << "Shakey's Garden has been generated.\n";
             break;
-        default:
+        default: // default if user did not select above options.
             system("cls");
             SetConsoleTextAttribute(hConsole, 12);
             cout << "Invalid choice, please try again.\n";
@@ -348,40 +335,33 @@ void startGame() {
     } while (userInput != 'Q');
 }
 
-// sets every value in the user-defined array to the default value '*'.
+// STORE RANDOM STARTING ELEMENTS
 void setStartingElements(vector<vector<string>>& garden, int x, int y) {
     random_device rd; // create random number generator.
     mt19937 rng(rd()); // generator seed.
     uniform_int_distribution<mt19937::result_type> randX(1, x - 2); // set value.
     uniform_int_distribution<mt19937::result_type> randY(1, y - 2);
-    int randomX = randX(rng);
-    int randomY = randX(rng);
     // set each element in the 2D array to this element.
     for (int i = 0; i < x; i++) {
         for (int j = 0; j < y; j++) {
             garden[i][j] = "* ";
         }
     }
-
-    for (int i = 0; i < (x + y) / 2; i++) { // generate random location for other items in Shakey's world.
-        randomX = randX(rng); randomY = randY(rng);
-        garden[randomX][randomY] = "T ";
-        randomX = randX(rng); randomY = randY(rng);
-        garden[randomX][randomY] = "M ";
-        randomX = randX(rng); randomY = randY(rng);
-        garden[randomX][randomY] = "W ";
+    // generate random location for other items in Shakey's world.
+    for (int i = 0; i < (x + y) / 2; i++) { 
+        garden[randX(rng)][randY(rng)] = "T ";
+        garden[randX(rng)][randY(rng)] = "M ";
+        garden[randX(rng)][randY(rng)] = "W ";
     }
-
-    for (int i = 0; i < x + y; i++) { // generate bushes and flowers more often.
-        randomX = randX(rng); randomY = randY(rng);
-        garden[randomX][randomY] = "B ";
-        randomX = randX(rng); randomY = randY(rng);
-        garden[randomX][randomY] = "F ";
+    // generate bushes and flowers more often.
+    for (int i = 0; i < x + y; i++) { 
+        garden[randX(rng)][randY(rng)] = "B ";
+        garden[randX(rng)][randY(rng)] = "F ";
     }
 }
 
-// creating/offsetting fence
-void createFence(vector<vector<string>>& shakey, int rows, int columns) {
+// STORE FENCE WALL ELEMENTS
+void setFence(vector<vector<string>>& shakey, int rows, int columns) {
     int col = columns - 1, row = rows - 1; // local values to prevent overflow.
     for (int i = 0; i < rows; ++i) {
         shakey[i][0] = "# ";
@@ -393,7 +373,7 @@ void createFence(vector<vector<string>>& shakey, int rows, int columns) {
     }
 }
 
-// control the console view of all elements in 2D array.
+// PRINT GARDEN ELEMENTS
 void printGarden(vector<vector<string>>& locGarden, int locRows, int locColumns) {
     for (int i = 0; i < locRows; i++) {
         for (int j = 0; j < locColumns; j++) {
@@ -426,7 +406,7 @@ void printGarden(vector<vector<string>>& locGarden, int locRows, int locColumns)
             } // gray color for garden
             cout << locGarden[i][j]; // print each element in the predefined garden.
         }
-        // print legend on right side of garden map.
+        // PRINT LEGEND.
         switch (i) {
         case 0:
             cout << "\tLegend:\n";
