@@ -361,8 +361,8 @@ void setStartingElements(vector<vector<string>>& item, int x, int y) {
 }
 
 // STORE FENCE WALL ELEMENTS
-void setFence(vector<vector<string>>& gardenFence, int row, int col) {
-    int col = col - 1, row = row - 1; // local values to prevent overflow.
+void setFence(vector<vector<string>>& gardenFence, int rows, int columns) {
+    int col = columns - 1, row = rows - 1; // local values to prevent overflow.
     for (int i = 0; i < row; ++i) {
         gardenFence[i][0] = "# ";
         gardenFence[i][col] = "# ";
