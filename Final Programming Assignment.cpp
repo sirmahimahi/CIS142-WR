@@ -336,7 +336,7 @@ void startGame() {
 }
 
 // STORE RANDOM STARTING ELEMENTS
-void setStartingElements(vector<vector<string>>& garden, int x, int y) {
+void setStartingElements(vector<vector<string>>& item, int x, int y) {
     random_device rd; // create random number generator.
     mt19937 rng(rd()); // generator seed.
     uniform_int_distribution<mt19937::result_type> randX(1, x - 2); // set value.
@@ -344,67 +344,67 @@ void setStartingElements(vector<vector<string>>& garden, int x, int y) {
     // set each element in the 2D array to this element.
     for (int i = 0; i < x; i++) {
         for (int j = 0; j < y; j++) {
-            garden[i][j] = "* ";
+            item[i][j] = "* ";
         }
     }
     // generate random location for other items in Shakey's world.
     for (int i = 0; i < (x + y) / 2; i++) { 
-        garden[randX(rng)][randY(rng)] = "T ";
-        garden[randX(rng)][randY(rng)] = "M ";
-        garden[randX(rng)][randY(rng)] = "W ";
+        item[randX(rng)][randY(rng)] = "T ";
+        item[randX(rng)][randY(rng)] = "M ";
+        item[randX(rng)][randY(rng)] = "W ";
     }
     // generate bushes and flowers more often.
     for (int i = 0; i < x + y; i++) { 
-        garden[randX(rng)][randY(rng)] = "B ";
-        garden[randX(rng)][randY(rng)] = "F ";
+        item[randX(rng)][randY(rng)] = "B ";
+        item[randX(rng)][randY(rng)] = "F ";
     }
 }
 
 // STORE FENCE WALL ELEMENTS
-void setFence(vector<vector<string>>& shakey, int rows, int columns) {
-    int col = columns - 1, row = rows - 1; // local values to prevent overflow.
-    for (int i = 0; i < rows; ++i) {
-        shakey[i][0] = "# ";
-        shakey[i][col] = "# ";
+void setFence(vector<vector<string>>& gardenFence, int row, int col) {
+    int col = col - 1, row = row - 1; // local values to prevent overflow.
+    for (int i = 0; i < row; ++i) {
+        gardenFence[i][0] = "# ";
+        gardenFence[i][col] = "# ";
     }
-    for (int j = 0; j < columns; ++j) {
-        shakey[0][j] = "# ";
-        shakey[row][j] = "# ";
+    for (int j = 0; j < col; ++j) {
+        gardenFence[0][j] = "# ";
+        gardenFence[row][j] = "# ";
     }
 }
 
 // PRINT GARDEN ELEMENTS
-void printGarden(vector<vector<string>>& locGarden, int locRows, int locColumns) {
-    for (int i = 0; i < locRows; i++) {
-        for (int j = 0; j < locColumns; j++) {
-            if (locGarden[i][j] == "# ") {
+void printGarden(vector<vector<string>>& garden, int row, int col) {
+    for (int i = 0; i < row; i++) {
+        for (int j = 0; j < col; j++) {
+            if (garden[i][j] == "# ") {
                 SetConsoleTextAttribute(hConsole, 8);
             } // gray color for fence
-            else if (locGarden[i][j] == "* ") {
+            else if (garden[i][j] == "* ") {
                 SetConsoleTextAttribute(hConsole, 8);
             } // gray color for empty space
-            else if (locGarden[i][j] == "S ") {
+            else if (garden[i][j] == "S ") {
                 SetConsoleTextAttribute(hConsole, 12);
             } // red color for Shakey
-            else if (locGarden[i][j] == "B ") {
+            else if (garden[i][j] == "B ") {
                 SetConsoleTextAttribute(hConsole, 5);
             } // purple color for bush
-            else if (locGarden[i][j] == "F ") {
+            else if (garden[i][j] == "F ") {
                 SetConsoleTextAttribute(hConsole, 6);
             } // yellow color for flower
-            else if (locGarden[i][j] == "M ") {
+            else if (garden[i][j] == "M ") {
                 SetConsoleTextAttribute(hConsole, 7);
             } // white color for mountain
-            else if (locGarden[i][j] == "T ") {
+            else if (garden[i][j] == "T ") {
                 SetConsoleTextAttribute(hConsole, 10);
             } // bright green color for tree
-            else if (locGarden[i][j] == "W ") {
+            else if (garden[i][j] == "W ") {
                 SetConsoleTextAttribute(hConsole, 9);
             } // blue color for water
             else {
                 SetConsoleTextAttribute(hConsole, 8);
             } // gray color for garden
-            cout << locGarden[i][j]; // print each element in the predefined garden.
+            cout << garden[i][j]; // print each element in the predefined garden.
         }
         // PRINT LEGEND.
         switch (i) {
