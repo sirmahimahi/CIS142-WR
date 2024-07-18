@@ -394,3 +394,4 @@ void printGarden(vector<vector<string>>& locGarden, int locRows, int locColumns)
         }
     }
 }
+endl;
