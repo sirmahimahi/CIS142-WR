@@ -412,15 +412,25 @@ void printGarden(vector<vector<string>>& locGarden, int locRows, int locColumns)
             cout << "\tLegend:\n";
             break;
         case 1:
-            cout << "\tS - Shakey\tB - Bush\n";
+            SetConsoleTextAttribute(hConsole, 12);
+            cout << "\tS - Shakey\t";
+            SetConsoleTextAttribute(hConsole, 5);
+            cout << "B - Bush\n";
             break;
         case 2:
-            cout << "\tF - Flower\tM - Mountain\n";
+            SetConsoleTextAttribute(hConsole, 6);
+            cout << "\tF - Flower\t";
+            SetConsoleTextAttribute(hConsole, 7);
+            cout << "M - Mountain\n";
             break;
         case 3:
-            cout << "\tT - Tree\tW - Water\n";
+            SetConsoleTextAttribute(hConsole, 10);
+            cout << "\tT - Tree\t";
+            SetConsoleTextAttribute(hConsole, 9);
+            cout << "W - Water\n";
             break;
         case 4:
+            SetConsoleTextAttribute(hConsole, 8);
             cout << "\t# - Fence\t* - Empty space";
         default:
             cout << endl;
