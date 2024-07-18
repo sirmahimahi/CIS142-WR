@@ -348,13 +348,13 @@ void setStartingElements(vector<vector<string>>& item, int x, int y) {
         }
     }
     // generate random location for other items in Shakey's world.
-    for (int i = 0; i < (x + y) / 2; i++) { 
+    for (int i = 0; i < (x + y) / 2; i++) {
         item[randX(rng)][randY(rng)] = "T ";
         item[randX(rng)][randY(rng)] = "M ";
         item[randX(rng)][randY(rng)] = "W ";
     }
     // generate bushes and flowers more often.
-    for (int i = 0; i < x + y; i++) { 
+    for (int i = 0; i < x + y; i++) {
         item[randX(rng)][randY(rng)] = "B ";
         item[randX(rng)][randY(rng)] = "F ";
     }
@@ -363,6 +363,7 @@ void setStartingElements(vector<vector<string>>& item, int x, int y) {
 // STORE FENCE WALL ELEMENTS
 void setFence(vector<vector<string>>& gardenFence, int rows, int columns) {
     int col = columns - 1, row = rows - 1; // local values to prevent overflow.
+    gardenFence[row][col] = "# ";
     for (int i = 0; i < row; ++i) {
         gardenFence[i][0] = "# ";
         gardenFence[i][col] = "# ";
