@@ -47,7 +47,7 @@ public:
 };
 // prototypes
 void game(std::vector<std::vector<Seat>>&);
-void checkAvailability(std::vector<std::vector<Seat>>&, std::string);
+void checkAvailability(std::vector<std::vector<Seat>>&, std::string, int, int);
 void setMap(std::vector<std::vector<Seat>>&);
 void printMap(std::vector<std::vector<Seat>>&);
 void printFirstClass(std::vector<std::vector<Seat>>&);
@@ -97,25 +97,67 @@ void game(std::vector<std::vector<Seat>>& seatMap) {
 	// combine seat number and letter.
 	std::string rowToStr = std::to_string(seatRow);
 	std::string seatPos = rowToStr + seatLetter;
-	std::cout << "You selected " << ticketName << seatPos;
+	std::cout << "You selected " << ticketName << seatPos << std::endl;
 
-	checkAvailability(seatMap, seatPos);
+	checkAvailability(seatMap, seatPos, ticketType, seatRow);
 }
 
 // ask the user to select a seat row and seat position.
-void checkAvailability(std::vector<std::vector<Seat>>& seatMap, std::string seatPos) {
+void checkAvailability(std::vector<std::vector<Seat>>& seatMap, std::string seatPos, int ticketType, int seatRow) {
 	bool found = false;
-	for (int j = 1; j < 7; j++) {
-		for (int i = 1; i < 14; i++) {
-			if (seatMap[i][j].getSeatPos() == seatPos && seatMap[i][j].getDisplay() == "* ") {
-				seatMap[i][j].setDisplay("O ");
-				std::cout << "\nThis seat is available.\n";
-				found = true;
-				break;
+	switch (ticketType) {
+	case 1:
+		if (seatRow >= 1 && seatRow <= 2) {
+			for (int j = 1; j < 7; j++) {
+				for (int i = 1; i < 14; i++) {
+					if (seatMap[i][j].getSeatPos() == seatPos && seatMap[i][j].getDisplay() == "* ") {
+						seatMap[i][j].setDisplay("O ");
+						std::cout << "\nThis seat is available.\n";
+						found = true;
+						break;
+					}
+				} if (found) break;
 			}
-		} if (found) break;
-	} 
-	if (found != true) std::cout << "\nThis seat is not available.\n";
+			if (found != true) std::cout << "\nThis seat is not available.\n";
+		}
+		else std::cout << "Invalid seat selection.\n";
+		break;
+	case 2:
+		if (seatRow >= 3 && seatRow <= 8) {
+			for (int j = 1; j < 7; j++) {
+				for (int i = 1; i < 14; i++) {
+					if (seatMap[i][j].getSeatPos() == seatPos && seatMap[i][j].getDisplay() == "* ") {
+						seatMap[i][j].setDisplay("O ");
+						std::cout << "\nThis seat is available.\n";
+						found = true;
+						break;
+					}
+				} if (found) break;
+			}
+			if (found != true) std::cout << "\nThis seat is not available.\n";
+		}
+		else std::cout << "Invalid seat selection.\n";
+		break;
+	case 3:
+		if (seatRow >= 9 && seatRow <= 13) {
+			for (int j = 1; j < 7; j++) {
+				for (int i = 1; i < 14; i++) {
+					if (seatMap[i][j].getSeatPos() == seatPos && seatMap[i][j].getDisplay() == "* ") {
+						seatMap[i][j].setDisplay("O ");
+						std::cout << "\nThis seat is available.\n";
+						found = true;
+						break;
+					}
+				} if (found) break;
+			}
+			if (found != true) std::cout << "\nThis seat is not available.\n";
+		}
+		else std::cout << "Invalid seat selection.\n";
+		break;
+	default:
+		std::cout << "Invalid Seleciton.\n";
+		break;
+	}
 }
 
 // set avaiable seats.
@@ -135,7 +177,7 @@ void setMap(std::vector<std::vector<Seat>>& seatMap) {
 			// combine seat number and letter.
 			std::string numToStr = std::to_string(i);
 			std::string seatPos = numToStr + c;
-			
+
 			// default values for the seat rows from 1 - 13.
 			int num = i;
 			std::string str = "Row ";
@@ -152,12 +194,12 @@ void setMap(std::vector<std::vector<Seat>>& seatMap) {
 				std::string available = "X ";
 				seatMap[i][j] = Seat(i, c, seatPos, available);
 			}
-			
+
 		}
 		c++;
 	}
 	// default values for seat position from A to F.
-	
+
 	std::string blank = " \t";
 	seatMap[0][0] = Seat(0, 'Z', "0Z", blank); // set empty value for top left array element.
 }
