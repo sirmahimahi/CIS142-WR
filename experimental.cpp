@@ -44,7 +44,7 @@ public:
 
 // prototypes
 void promptGardenSize(int&, int&);
-void setGarden(vector<vector<Garden>>&, int, int, Garden&, Garden&, Garden&, Garden&, Garden&, Garden&);
+void setGarden(vector<vector<Garden>>&, int, int, Garden&, Garden&, Garden&, Garden&, Garden&, Garden&, Garden&);
 void printGarden(vector<vector<Garden>>&, int, int);
 
 int main() {
@@ -55,13 +55,14 @@ int main() {
 
 	// shakey.setItem("S "); // set the item for the object shakey.
 	Garden shakey("S ", MOVEABLE, NOTBREAKABLE, WALKABLE);
-	Garden flower("F ", MOVEABLE, NOTBREAKABLE, WALKABLE);
-	Garden tree("T ", MOVEABLE, NOTBREAKABLE, WALKABLE);
-	Garden mountain("M ", MOVEABLE, NOTBREAKABLE, WALKABLE);
-	Garden water("W ", MOVEABLE, NOTBREAKABLE, WALKABLE); 
+	Garden flower("F ", MOVEABLE, BREAKABLE, WALKABLE);
+	Garden tree("T ", NOTMOVEABLE, NOTBREAKABLE, NOTWALKABLE);
+	Garden mountain("M ", NOTMOVEABLE, NOTBREAKABLE, NOTWALKABLE);
+	Garden water("W ", NOTMOVEABLE, NOTBREAKABLE, NOTWALKABLE); 
 	Garden space("* ", MOVEABLE, NOTBREAKABLE, WALKABLE); 
+	Garden fence("# ", NOTMOVEABLE, NOTBREAKABLE, NOTWALKABLE);
 
-	setGarden(garden, row, col, shakey, flower, tree, mountain, water, space);
+	setGarden(garden, row, col, shakey, flower, tree, mountain, water, space, fence);
 	printGarden(garden, row, col);
 
 	return 0;
@@ -80,7 +81,7 @@ void promptGardenSize(int& row, int& col) {
 }
 
 // SET RANDOM ITEMS IN GARDEN
-void setGarden(vector<vector<Garden>>& garden, int row, int col, Garden& shakey, Garden& flower, Garden& tree, Garden& mountain, Garden& water, Garden& space) {
+void setGarden(vector<vector<Garden>>& garden, int row, int col, Garden& shakey, Garden& flower, Garden& tree, Garden& mountain, Garden& water, Garden& space, Garden& fence) {
 	std::random_device rd; // create variable.
 	std::mt19937 rng(rd()); // generator seed for variable.
 	std::uniform_int_distribution<std::mt19937::result_type> randNum(1, 10); // set value.
@@ -97,17 +98,17 @@ void setGarden(vector<vector<Garden>>& garden, int row, int col, Garden& shakey,
 			default: garden[y][x] = space; break;
 			}
 			// set fence wall.
-			garden[y][0] = Garden("# ", NOTMOVEABLE, NOTBREAKABLE, NOTWALKABLE); // top row.
-			garden[0][x] = Garden("# ", NOTMOVEABLE, NOTBREAKABLE, NOTWALKABLE); // bottom row.
-			garden[y][fenceCol] = Garden("# ", NOTMOVEABLE, NOTBREAKABLE, NOTWALKABLE); // left column.
-			garden[fenceRow][x] = Garden("# ", NOTMOVEABLE, NOTBREAKABLE, NOTWALKABLE); // right column.
+			garden[y][0] = fence; // top row.
+			garden[0][x] = fence; // bottom row.
+			garden[y][fenceCol] = fence; // left column.
+			garden[fenceRow][x] = fence; // right column.
 		}
 	}
 	// empty starting space override.
 	garden[1][1] = shakey; // set starting location for shakey.
-	garden[1][2] = Garden("* ", NOTMOVEABLE, NOTBREAKABLE, WALKABLE);
-	garden[2][1] = Garden("* ", NOTMOVEABLE, NOTBREAKABLE, WALKABLE);
-	garden[2][2] = Garden("* ", NOTMOVEABLE, NOTBREAKABLE, WALKABLE);
+	garden[1][2] = space;
+	garden[2][1] = space;
+	garden[2][2] = space;
 }
 // PRINT GARDEN ITEMS
 void printGarden(vector<vector<Garden>>& garden, int row, int col) {
