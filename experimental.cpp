@@ -20,6 +20,7 @@ private:
 	bool moveable;
 	bool fragile;
 	bool walkable;
+
 public:
 	Garden() { // default constructor.
 		moveable = false; fragile = false; walkable = false;
@@ -37,14 +38,36 @@ public:
 	void setItem(string item) {
 		this->item = item;
 	}
+	
+
 };
 
 // prototypes
-void setMatrix(vector<vector<Garden>>&, int, int, Garden&);
-void printMatrix(vector<vector<Garden>>&, int, int);
+void promptGardenSize(int&, int&);
+void setGarden(vector<vector<Garden>>&, int, int, Garden&, Garden&, Garden&, Garden&, Garden&, Garden&);
+void printGarden(vector<vector<Garden>>&, int, int);
 
 int main() {
+	// used for gathering information about garden size.
 	int row = -1; int col = -1;
+	promptGardenSize(row, col); // ask the user to define rows and columns of map size.
+	vector<vector<Garden>> garden(row, vector<Garden>(col)); // generate new Garden Matrix based on user input size.
+
+	// shakey.setItem("S "); // set the item for the object shakey.
+	Garden shakey("S ", MOVEABLE, NOTBREAKABLE, WALKABLE);
+	Garden flower("F ", MOVEABLE, NOTBREAKABLE, WALKABLE);
+	Garden tree("T ", MOVEABLE, NOTBREAKABLE, WALKABLE);
+	Garden mountain("M ", MOVEABLE, NOTBREAKABLE, WALKABLE);
+	Garden water("W ", MOVEABLE, NOTBREAKABLE, WALKABLE); 
+	Garden space("* ", MOVEABLE, NOTBREAKABLE, WALKABLE); 
+
+	setGarden(garden, row, col, shakey, flower, tree, mountain, water, space);
+	printGarden(garden, row, col);
+
+	return 0;
+}
+// ASK THE USER TO GENERATE GARDEN SIZE
+void promptGardenSize(int& row, int& col) {
 	cout << "Enter rows (min 2): ";
 	cin >> row;
 	row = row + 2; // added for fence wall.
@@ -54,64 +77,57 @@ int main() {
 	cin >> col;
 	col = col + 2; // added for fence wall.
 	system("cls");
-	// generate new Garden Matrix based on user input size.
-	vector<vector<Garden>> matrix(row, vector<Garden>(col));
-	Garden shakey;
-	shakey.setItem( "S ");
-	setMatrix(matrix, row, col, shakey);
-	printMatrix(matrix, row, col);
-
-	return 0;
 }
 
-void setMatrix(vector<vector<Garden>>& matrix, int row, int col, Garden& shakey) {
+// SET RANDOM ITEMS IN GARDEN
+void setGarden(vector<vector<Garden>>& garden, int row, int col, Garden& shakey, Garden& flower, Garden& tree, Garden& mountain, Garden& water, Garden& space) {
 	std::random_device rd; // create variable.
 	std::mt19937 rng(rd()); // generator seed for variable.
-	std::uniform_int_distribution<std::mt19937::result_type> randNum(1, 8); // set value.
+	std::uniform_int_distribution<std::mt19937::result_type> randNum(1, 10); // set value.
 
-	int fenceRow = col - 1; int fenceCol = col - 1;
+	int fenceRow = col - 1; int fenceCol = col - 1; // used to define total elements in array. array elements start at 0.
 	for (int y = 0; y < row; y++) { // y = rows.
 		for (int x = 0; x < col; x++) { // x = columns.
-			// cout << randNum(rng); // debug (print random number).
-			switch (randNum(rng)) { // generate a random number to assign a random item to each tile.
-			case 1:
-				matrix[y][x] = Garden( "W ", NOTMOVEABLE, NOTBREAKABLE, NOTWALKABLE); // water.
-				break;
-			case 2:
-				matrix[y][x] = Garden( "M ", NOTMOVEABLE, NOTBREAKABLE, NOTWALKABLE); // mountain.
-				break;
-			case 3:
-				matrix[y][x] = Garden( "T ", NOTMOVEABLE, NOTBREAKABLE, NOTWALKABLE); // tree.
-				break;
-			case 4:
-				matrix[y][x] = Garden( "F ", MOVEABLE, BREAKABLE, WALKABLE); // flower.
-				break;
-			case 5:
-				matrix[y][x] = Garden( "B ", MOVEABLE, NOTBREAKABLE, WALKABLE); // bush.
-				break;
-			default:
-				matrix[y][x] = Garden("* ", NOTMOVEABLE, NOTBREAKABLE, WALKABLE); // empty space.
-				break;
+			// set random item to each array value defined by the user.
+			switch (randNum(rng)) { 
+			case 1: garden[y][x] = water; break;
+			case 2: garden[y][x] = mountain; break;
+			case 3: garden[y][x] = tree; break;
+			case 4: garden[y][x] = flower; break;
+			default: garden[y][x] = space; break;
 			}
 			// set fence wall.
-			matrix[y][0] = Garden("# ", NOTMOVEABLE, NOTBREAKABLE, NOTWALKABLE);
-			matrix[0][x] = Garden("# ", NOTMOVEABLE, NOTBREAKABLE, NOTWALKABLE);
-			matrix[y][fenceCol] = Garden("# ", NOTMOVEABLE, NOTBREAKABLE, NOTWALKABLE);
-			matrix[fenceRow][x] = Garden("# ", NOTMOVEABLE, NOTBREAKABLE, NOTWALKABLE);
+			garden[y][0] = Garden("# ", NOTMOVEABLE, NOTBREAKABLE, NOTWALKABLE); // top row.
+			garden[0][x] = Garden("# ", NOTMOVEABLE, NOTBREAKABLE, NOTWALKABLE); // bottom row.
+			garden[y][fenceCol] = Garden("# ", NOTMOVEABLE, NOTBREAKABLE, NOTWALKABLE); // left column.
+			garden[fenceRow][x] = Garden("# ", NOTMOVEABLE, NOTBREAKABLE, NOTWALKABLE); // right column.
 		}
 	}
-	// empty starting space override..
-	matrix[1][1] = Garden(shakey.getItem(), NOTMOVEABLE, NOTBREAKABLE, WALKABLE); // set starting location for shakey.
-	matrix[1][2] = Garden("* ", NOTMOVEABLE, NOTBREAKABLE, WALKABLE);
-	matrix[2][1] = Garden("* ", NOTMOVEABLE, NOTBREAKABLE, WALKABLE);
-	matrix[2][2] = Garden("* ", NOTMOVEABLE, NOTBREAKABLE, WALKABLE);
+	// empty starting space override.
+	garden[1][1] = shakey; // set starting location for shakey.
+	garden[1][2] = Garden("* ", NOTMOVEABLE, NOTBREAKABLE, WALKABLE);
+	garden[2][1] = Garden("* ", NOTMOVEABLE, NOTBREAKABLE, WALKABLE);
+	garden[2][2] = Garden("* ", NOTMOVEABLE, NOTBREAKABLE, WALKABLE);
 }
-
-void printMatrix(vector<vector<Garden>>& matrix, int row, int col) {
+// PRINT GARDEN ITEMS
+void printGarden(vector<vector<Garden>>& garden, int row, int col) {
 	for (int y = 0; y < row; y++) { // y = rows.
 		for (int x = 0; x < col; x++) { // x = columns.
-			cout << matrix[y][x].getItem();
+			if (garden[y][x].getItem() == "W ") 
+				cout << "\x1B[34m" << garden[y][x].getItem() << "\033[0m"; // blue water
+			if (garden[y][x].getItem() == "M ") 
+				cout << "\x1B[97m" << garden[y][x].getItem() << "\033[0m"; // white mountain
+			if (garden[y][x].getItem() == "T ") 
+				cout << "\x1B[92m" << garden[y][x].getItem() << "\033[0m"; // green tree
+			if (garden[y][x].getItem() == "F ") 
+				cout << "\x1B[33m" << garden[y][x].getItem() << "\033[0m"; // yellow flower
+			if (garden[y][x].getItem() == "* ") 
+				cout << "\x1B[30m" << garden[y][x].getItem() << "\033[0m"; // black empty space
+			if (garden[y][x].getItem() == "# ") 
+				cout << "\x1B[37m" << garden[y][x].getItem() << "\033[0m"; // grey fence wall
+			if (garden[y][x].getItem() == "S ") 
+				cout << "\x1B[31m" << garden[y][x].getItem() << "\033[0m"; // red shakey the robot
 		}
-		cout << endl;
+		cout << endl; // new line after each item has been displayed in a row.
 	}
 }
