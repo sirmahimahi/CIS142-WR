@@ -1,6 +1,6 @@
 // CIS142 Introduction to C++ Summer 2024
 // Final Programming Assignment
-// Luis, Mao Bergan
+// Luis Daniel Cirilo Salinas, Mao Bergan
 // 25 July 2024
 
 // Final Programming Assignment.cpp
